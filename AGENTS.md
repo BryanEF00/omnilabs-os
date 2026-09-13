@@ -21,6 +21,7 @@
    - **Zero Código Inline no PowerShell**: Nunca executar scripts multilinhas com aspas e escapes inline (`node -e` ou `tsx -e`). No Windows/PowerShell isso causa congelamento de stdin (espera fantasma de teclado). Sempre gravar o código em arquivo de script (`.ts` ou `.js`) e executá-lo diretamente.
    - **Margem Síncrona Adequada**: Comandos habituais devem rodar com margem síncrona alta (`WaitMsBeforeAsync: 10000`) para responderem no mesmo instante sem ir para segundo plano à toa.
    - **Alarme Sentinela Ativo**: Todo processo longo enviado para segundo plano deve ser acompanhado de um timer via ferramenta `schedule` (máximo 30s a 60s) para auditar os logs e o status. Se o log tiver 0 bytes ou o processo estagnar, abortar imediatamente (`kill`) e investigar o motivo com o Bryan, eliminando esperas cegas no escuro.
+10. **Sincronização Contínua com GitHub**: Todo e qualquer commit validado e realizado no repositório local deve ser imediatamente enviado ao GitHub via `git push`, mantendo o repositório remoto sempre espelhado e pronto para ser consumido na máquina do laboratório.
 
 ---
 
