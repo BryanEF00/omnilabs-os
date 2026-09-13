@@ -43,3 +43,4 @@ Ao iniciar uma nova conversa:
 | **Modelos de Dados, Prisma Schema & Fluxos** | [`docs/03-data-models-flows.md`](file:///d:/Projetos/omnilabs-os/docs/03-data-models-flows.md) |
 | **Roteiro de Fases & Metas (Outubro/2026)** | [`docs/04-scope-roadmap.md`](file:///d:/Projetos/omnilabs-os/docs/04-scope-roadmap.md) |
 | **Padrões de Nomenclatura e Código** | [`docs/05-coding-standards.md`](file:///d:/Projetos/omnilabs-os/docs/05-coding-standards.md) |
+| **Design System, Cores & Ergonomia (OmniDS)** | [`docs/06-design-system.md`](file:///d:/Projetos/omnilabs-os/docs/06-design-system.md) |
