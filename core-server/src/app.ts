@@ -47,7 +47,8 @@ export async function buildApp() {
     // Caso B: Erro de Validação de Dados (Zod Schema)
     if (error instanceof ZodError) {
       const firstIssue = error.issues[0];
-      const customCode = (firstIssue?.params as Record<string, unknown>)?.code as string || 'VALIDATION_ERROR';
+      const params = (firstIssue as { params?: Record<string, unknown> } | undefined)?.params;
+      const customCode = typeof params?.code === 'string' ? params.code : 'VALIDATION_ERROR';
       return reply.status(400).send({
         success: false,
         error: {

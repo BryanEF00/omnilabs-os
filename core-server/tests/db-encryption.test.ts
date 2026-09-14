@@ -1,6 +1,7 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import Database from 'better-sqlite3-multiple-ciphers';
 import { config } from '../src/config/env.js';
+import { runMigrations } from '../src/db/migrate.js';
 
 // ============================================================================
 // SUÍTE DE TESTES: INTEGRIDADE CRIPTOGRÁFICA DO BANCO (SQLCIPHER)
@@ -8,6 +9,10 @@ import { config } from '../src/config/env.js';
 // ============================================================================
 
 describe('Blindagem Criptográfica do Banco de Dados (SQLCipher)', () => {
+  beforeAll(() => {
+    // Garante determinismo total executando as migrações mesmo em banco zerado
+    runMigrations();
+  });
   it('Cenário 1: Deve bloquear o acesso e recusar a leitura quando nenhuma chave for fornecida', () => {
     // Tenta abrir o arquivo omnilabs.db sem enviar a chave AES-256
     const unauthDb = new Database(config.DATABASE_PATH);

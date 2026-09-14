@@ -22,6 +22,7 @@
    - **Margem Síncrona Adequada**: Comandos habituais devem rodar com margem síncrona alta (`WaitMsBeforeAsync: 10000`) para responderem no mesmo instante sem ir para segundo plano à toa.
    - **Alarme Sentinela Ativo**: Todo processo longo enviado para segundo plano deve ser acompanhado de um timer via ferramenta `schedule` (máximo 30s a 60s) para auditar os logs e o status. Se o log tiver 0 bytes ou o processo estagnar, abortar imediatamente (`kill`) e investigar o motivo com o Bryan, eliminando esperas cegas no escuro.
 10. **Sincronização Contínua com GitHub**: Todo e qualquer commit validado e realizado no repositório local deve ser imediatamente enviado ao GitHub via `git push`, mantendo o repositório remoto sempre espelhado e pronto para ser consumido na máquina do laboratório.
+11. **Commits Atômicos Automáticos por Marco Validado**: O agente deve agir de forma proativa na persistência do código, sem que o Bryan precise solicitar ou lembrar de salvar. Assim que qualquer unidade lógica for concluída e validada (compilação limpa no `npm run build` / `tsc` e testes 100% verdes no `npm test`), o agente deve imediatamente realizar o commit semântico (padrão *Conventional Commits*) e executar o `git push` para o GitHub.
 
 ---
 

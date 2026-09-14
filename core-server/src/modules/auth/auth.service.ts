@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { type SignOptions } from 'jsonwebtoken';
 import { count, eq, or } from 'drizzle-orm';
 import { db } from '../../db/connection.js';
 import { users, type User } from '../../db/schema/users.js';
@@ -67,7 +67,7 @@ export class AuthService {
         isSupervisor: newUser.isSupervisor,
       },
       config.JWT_SECRET,
-      { expiresIn: config.JWT_EXPIRES_IN }
+      { expiresIn: config.JWT_EXPIRES_IN as SignOptions['expiresIn'] }
     );
 
     return {
@@ -157,7 +157,7 @@ export class AuthService {
         isSupervisor: activatedUser.isSupervisor,
       },
       config.JWT_SECRET,
-      { expiresIn: config.JWT_EXPIRES_IN }
+      { expiresIn: config.JWT_EXPIRES_IN as SignOptions['expiresIn'] }
     );
 
     return {
@@ -193,7 +193,7 @@ export class AuthService {
         isSupervisor: user.isSupervisor,
       },
       config.JWT_SECRET,
-      { expiresIn: config.JWT_EXPIRES_IN }
+      { expiresIn: config.JWT_EXPIRES_IN as SignOptions['expiresIn'] }
     );
 
     return {
