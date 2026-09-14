@@ -30,45 +30,37 @@ Todas as combinações de texto e fundo devem respeitar rigorosamente o nível *
 | **`bg-app`** | `#f8fafc` | **Fundo de Tela do Sistema (Descanso 24/7)**. Cinza gelo suave que reduz a fadiga ocular dos operadores no 3º Turno. | Proibido usar branco 100% como fundo de tela geral. |
 | **`bg-surface`** | `#ffffff` | **Superfície de Cards e Painéis**. Branco puro com sombra sutil (`shadow-xs` a `shadow-sm`). | Proibido empilhar cards brancos dentro de cards brancos. |
 | **`neutral-soft`** | `#f5f5f5` | **Cinza Neutro Puro (Sem azulado)**. Fundo de botões secundários e trilhos de filtros. | Proibido usar tons azulados de slate quando o objetivo for neutralidade. |
-| **`neutral-dark`** | `#0f172a` | **Dark Slate / Obsidiana**. Texto principal de altíssimo contraste e botões de comando administrativo. | Proibido usar cinza claro para textos de leitura crítica. |
+| **`neutral-dark`** | `#0f172a` | **Dark Slate / Obsidiana**. Texto principal de altíssimo contraste e tooltips informativos escuros. | Proibido usar cinza claro para textos de leitura crítica. |
 | **`action-indigo`** | `#1e40af` | **Azul Índigo Japonês (`Aiiro`)**. Cor terciária para ações de dados: relatórios, exportar Excel e gráficos. | Proibido usar para botões de confirmação simples de formulário. |
 | **`status-danger`** | `#dc2626` | **Carmesim de Alerta / Erro**. Mensagens de falha e limpezas atrasadas, **sempre acompanhado de ícone de aviso**. | Proibido usar sem ícone (o operador pode confundir com o vermelho da marca). |
 
 ---
 
-## 3. Taxonomia Rigorosa de Botões & Pares de Ação
+## 3. Taxonomia Rigorosa de Botões & Hierarquia de Ação
 
-Em uma aplicação profissional, os botões respondem a uma hierarquia psicológica clara:
+Inspirado nos maiores Design Systems do mundo (Shopify Polaris, GitHub Primer e Stripe Sail), as ações não são divididas por departamentos arbitrários. Os botões comunicam **hierarquia pura e inequívoca de importância**:
 
-### 3.1. O Par Clássico de Formulário (Confirmação vs. Cancelamento)
-Sempre que o analista preenche um formulário (registro de ocorrência, início de turno, login):
-* **Botão Positivo (Confirmação)**:
-  * **Visual**: Fundo Vermelho Ajinomoto sólido (`bg-[#de3636] text-white`).
-  * **Física**: Sem borda aparente, sombra sutil em repouso (`shadow-xs`), leve elevação (`shadow-md`) e microbrilho no hover.
-  * **Exemplo de Texto**: `"Gravar ocorrência"`, `"Entrar no sistema"`, `"Iniciar turno"`.
-* **Botão Negativo (Cancelamento / Descarte)**:
-  * **Visual**: Fundo Cinza Neutro Suave (`bg-neutral-100 hover:bg-neutral-200 text-neutral-700 hover:text-neutral-950`).
-  * **Física**: Sem borda aparente, mesma altura (38px) e mesma sombra do primário. No hover, o texto salta para quase preto semi-bold.
-  * **Exemplo de Texto**: `"Cancelar"`, `"Voltar"`, `"Limpar"`.
+### 3.1. Botão Primário Único (Vermelho Oficial Ajinomoto `#de3636`)
+* **Propósito**: É a **ação principal e recomendada de avanço/confirmação** em qualquer tela, modal ou formulário do sistema, sem exceção.
+* **Exemplos**: `"Gravar ocorrência"`, `"Entrar no sistema"`, `"Iniciar turno"`, `"Cadastrar analista"`, `"Salvar configurações"`.
+* **Visual**: Fundo Vermelho Ajinomoto sólido (`bg-[#de3636] text-white`).
+* **Física**: Sem borda aparente, sombra sutil em repouso (`shadow-xs`), leve elevação (`shadow-md`) e microbrilho no hover.
+* **Regra Inegociável de Ergonomia**: **Existe apenas 1 botão primário por contexto/tela**. O operador nunca hesita: vermelho significa "Confirmar / Gravar / Avançar".
 
 ---
 
-### 3.2. Onde entra o Botão Dark Slate (Preto Obsidiana `#0F172A`)?
-O botão Dark Slate é uma ferramenta de **autoridade executiva e comandos de sistema**, reservado para ações que **não são a rotina biológica diária**:
-1. **Governança & Administração**:
-   * `"Cadastrar novo analista"`, `"Salvar configurações de turno"`, `"Conectar dispositivo"`.
-2. **Ações Neutras de Alto Nível no Cabeçalho Global**:
-   * Botões de troca de visualização macro no topo do sistema.
-* **Por que essa distinção é vital?** O analista sabe que o vermelho Ajinomoto é a sua ação de rotina de bancada, enquanto o preto representa operações de governança e controle do sistema.
+### 3.2. Botão Secundário / Descarte (Cinza Neutro Suave `#f5f5f5`)
+* **Propósito**: Ações de apoio, cancelamento, descarte ou fechamento que não devem concorrer visualmente com o botão primário.
+* **Visual**: Fundo Cinza Neutro Suave (`bg-neutral-100 hover:bg-neutral-200 text-neutral-700 hover:text-neutral-950`).
+* **Física**: Sem borda aparente, mesma altura (38px) do primário. No hover, o texto salta para quase preto semi-bold.
+* **Exemplos**: `"Cancelar"`, `"Voltar"`, `"Limpar"`, `"Fechar"`.
 
 ---
 
-### 3.3. Onde entra o Botão Terciário Azul Índigo Japonês (`#1E40AF`)?
-O azul transmite precisão matemática e frieza laboratorial. Ele é usado **exclusivamente para ações de dados e saída**:
-1. `"Exportar dados em Excel"`
-2. `"Imprimir caderno de turno"`
-3. `"Gerar relatório semanal"`
-* O botão azul nunca concorre com o formulário de gravação; ele é o atalho para consumo e exportação de inteligência do laboratório.
+### 3.3. Botão de Inteligência & Ações de Dados (Azul Índigo Japonês `#1e40af`)
+* **Propósito**: O azul índigo (`Aiiro`) é reservado exclusivamente para **consumo e exportação de dados laboratoriais**.
+* **Exemplos**: `"Exportar Excel"`, `"Imprimir caderno de turno"`, `"Gerar relatório semanal"`.
+* **Regra**: O botão azul nunca concorre com o formulário de gravação; ele é o atalho para inteligência e relatórios do laboratório.
 
 ---
 

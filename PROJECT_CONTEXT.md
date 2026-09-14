@@ -129,7 +129,7 @@ O escopo de Outubro substitui e unifica as aplicações isoladas e planilhas par
     - Login nominal com hash `bcrypt` e tokens JWT (12h de expiração para o turno).
     - Consulta de sessão `/me` e logout seguro.
   - Suíte de testes do Vitest (TDD) com **11 testes passando 100%** (tempo de execução: ~1.6s).
-  - Especificação formal do **OmniDS (Design System & Ergonomia Visual)** documentada em [`docs/06-design-system.md`](docs/06-design-system.md) (paleta neutra pura, taxonomia de botões, regras WCAG e anti-padrões).
+  - Especificação formal do **OmniDS (Design System & Ergonomia Visual)** documentada em [`docs/06-design-system.md`](docs/06-design-system.md) (paleta neutra pura, hierarquia universal com botão primário único em Vermelho Ajinomoto, regras WCAG e anti-padrões).
 * **Próxima Etapa da Fase 1**:
   - Configuração da casca do frontend (`os-client` com Vite, React, TailwindCSS, Lucide Icons e telas de Setup Inicial, Primeiro Acesso e Login).
 
