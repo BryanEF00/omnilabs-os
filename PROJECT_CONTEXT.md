@@ -130,7 +130,17 @@ O escopo de Outubro substitui e unifica as aplicações isoladas e planilhas par
     - Consulta de sessão `/me` e logout seguro.
   - Suíte de testes do Vitest (TDD) com **11 testes passando 100%** (tempo de execução: ~1.6s).
   - Especificação formal do **OmniDS (Design System & Ergonomia Visual)** documentada em [`docs/06-design-system.md`](docs/06-design-system.md) (Modo Light exclusivo com fundo de descanso `#f8fafc`, hierarquia universal com botão primário único em Vermelho Ajinomoto, matriz de 5 status semânticos, botão `[ ? ]` contextual, regras WCAG e anti-padrões).
-* **Próxima Etapa da Fase 1**:
-  - Configuração da casca do frontend (`os-client` com Vite, React, TailwindCSS, Lucide Icons e telas de Setup Inicial, Primeiro Acesso e Login).
+  - **Frontend SPA (`os-client`) Construído e Integrado**:
+    - Scaffolding completo com Vite 6, React 18, TypeScript e Tailwind CSS com tokens do OmniDS.
+    - Componentes e primitivas UI baseados no shadcn/ui e Radix UI com logotipo oficial pristine da Ajinomoto em SVG (`AjinomotoLogo`).
+    - Tela de Acesso em arquitetura **Split-Screen Dual-Panel**:
+      - **Coluna Esquerda (Hero)**: Identidade visual oficial Ajinomoto (Pantone 186 C `#de3636`), títulos institucionais e as **3 animações biológicas** do protótipo (`Bubbles` de CO2 procedural, `Waves` com gotas em escorrimento de vidro e `Cells` em Canvas 2D com nado browniano e mitose ótica simétrica).
+      - **Sentinela 24/7 Sleep Guard**: Pausa imediata de timers e RAF do Canvas quando `document.hidden === true`, economizando ciclos de CPU/GPU nas máquinas da bancada.
+      - **Coluna Direita (Governança)**: Formulários nominais com validação estrita (`LoginForm`, `FirstAccessForm` com máscara `@br.ajinomoto.com` e `SetupInitialForm` para Dia Zero).
+    - Cliente HTTP nativo (`api.ts`) com caminhos 100% relativos (`/api/v1/...`) e cookies seguros `HttpOnly` (`credentials: 'include'`).
+    - Store Zustand (`authStore.ts`) com verificação preventiva de sessão (`checkSession`), prevenção de flash (FOUC) e sanitização no logout.
+    - Roteamento declarativo com React Router DOM v7 (`/login`, `/primeiro-acesso`, `/setup`, `/`) e shell autenticada provisória de recepção nominal do operador.
+* **Próxima Etapa (Fase 2)**:
+  - **Caderno de Turno Digital & Passagem de Turno**: Implementação do modelo de dados de turnos, feed de ocorrências com imutabilidade, quadro Kanban de pendências e avisos, e colaboração em tempo real para a passagem de turno.
 
 
