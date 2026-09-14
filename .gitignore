@@ -8,6 +8,7 @@ yarn-error.log*
 dist/
 build/
 .cache/
+*.tsbuildinfo
 
 # Variáveis de ambiente e segredos (NUNCA commitados)
 .env
