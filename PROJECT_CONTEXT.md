@@ -140,6 +140,10 @@ O escopo de Outubro substitui e unifica as aplicações isoladas e planilhas par
     - Cliente HTTP nativo (`api.ts`) com caminhos 100% relativos (`/api/v1/...`) e cookies seguros `HttpOnly` (`credentials: 'include'`).
     - Store Zustand (`authStore.ts`) com verificação preventiva de sessão (`checkSession`), prevenção de flash (FOUC) e sanitização no logout.
     - Roteamento declarativo com React Router DOM v7 (`/login`, `/primeiro-acesso`, `/setup`, `/`) e shell autenticada provisória de recepção nominal do operador.
+    - **Refinamento Visual & Governança de UI da Tela de Acesso**:
+      - Hero Panel padronizado com cabeçalho limpo, novo seletor de animações em vidro acetinado translúcido e rodapé com marca d'água (`OmniLabs OS • v1.0.0`).
+      - Formulário de login estritamente por `username` nominal, sem subtítulo e com slot de feedback pré-alocado para **Zero Layout Shift (CLS = 0)**.
+      - **Fluxo de Trabalho Oficial Estabelecido**: Todo e qualquer ajuste de UI exige obrigatoriamente proposta conceitual + **preview visual prévio** + aprovação explícita do Bryan antes de qualquer codificação (Regra 13 do `AGENTS.md`).
 * **Próxima Etapa (Fase 2)**:
   - **Caderno de Turno Digital & Passagem de Turno**: Implementação do modelo de dados de turnos, feed de ocorrências com imutabilidade, quadro Kanban de pendências e avisos, e colaboração em tempo real para a passagem de turno.
 
