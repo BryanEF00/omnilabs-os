@@ -63,23 +63,26 @@ export const FirstAccessForm: React.FC<FirstAccessFormProps> = ({ onSwitchToLogi
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full" noValidate>
       <div className="space-y-1 text-left">
-        <h2 className="text-xl font-bold tracking-tight text-neutral-dark">Primeiro Acesso</h2>
+        <h2 className="text-xl font-bold tracking-tight text-neutral-dark">Primeiro acesso</h2>
         <p className="text-sm text-slate-500">Ativação de credencial de operador</p>
       </div>
 
-      {errorMessage && (
-        <div
-          role="alert"
-          className="flex items-start gap-2.5 p-3 text-xs bg-red-50 border border-red-200 text-red-700 rounded-md animate-in fade-in duration-200"
-        >
-          <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
-          <span className="leading-tight">{errorMessage}</span>
-        </div>
-      )}
+      {/* Slot reservado para mensagens com Zero Layout Shift (CLS = 0) */}
+      <div className="min-h-[44px] flex items-center" aria-live="polite">
+        {errorMessage ? (
+          <div
+            role="alert"
+            className="w-full flex items-start gap-2.5 px-3 py-2.5 text-xs bg-red-50 border border-red-200 text-red-700 rounded-md animate-in fade-in duration-150"
+          >
+            <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+            <span className="leading-tight">{errorMessage}</span>
+          </div>
+        ) : null}
+      </div>
 
       <div className="space-y-1.5 text-left">
         <div className="flex items-center justify-between">
-          <Label htmlFor="first-access-email">E-mail Corporativo</Label>
+          <Label htmlFor="first-access-email">E-mail corporativo</Label>
           {email && (
             <span className="text-[11px] font-medium flex items-center gap-1">
               {isEmailValidDomain ? (
@@ -108,7 +111,7 @@ export const FirstAccessForm: React.FC<FirstAccessFormProps> = ({ onSwitchToLogi
       </div>
 
       <div className="space-y-1.5 text-left">
-        <Label htmlFor="first-access-password">Defina sua Senha</Label>
+        <Label htmlFor="first-access-password">Defina sua senha</Label>
         <Input
           id="first-access-password"
           type="password"
@@ -125,7 +128,7 @@ export const FirstAccessForm: React.FC<FirstAccessFormProps> = ({ onSwitchToLogi
       </div>
 
       <div className="space-y-1.5 text-left">
-        <Label htmlFor="first-access-confirm">Confirme sua Senha</Label>
+        <Label htmlFor="first-access-confirm">Confirme sua senha</Label>
         <Input
           id="first-access-confirm"
           type="password"
@@ -148,7 +151,7 @@ export const FirstAccessForm: React.FC<FirstAccessFormProps> = ({ onSwitchToLogi
         disabled={isLoading}
       >
         <KeyRound className="w-4 h-4" />
-        {isLoading ? 'Ativando...' : 'Ativar Minha Conta'}
+        {isLoading ? 'Ativando...' : 'Ativar minha conta'}
       </Button>
 
       {onSwitchToLogin && (
@@ -159,7 +162,7 @@ export const FirstAccessForm: React.FC<FirstAccessFormProps> = ({ onSwitchToLogi
             className="text-xs font-medium text-slate-500 hover:text-neutral-dark inline-flex items-center gap-1.5 transition-colors focus:outline-none focus:underline"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            Voltar para o Login
+            Voltar para o login
           </button>
         </div>
       )}

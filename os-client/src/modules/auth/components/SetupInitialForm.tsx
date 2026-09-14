@@ -70,10 +70,10 @@ export const SetupInitialForm: React.FC<SetupInitialFormProps> = ({ onSuccess })
       <div className="space-y-1 text-left">
         <div className="flex items-center gap-2">
           <span className="px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 rounded-full">
-            Dia Zero
+            Dia zero
           </span>
         </div>
-        <h2 className="text-xl font-bold tracking-tight text-neutral-dark">Configuração Inicial</h2>
+        <h2 className="text-xl font-bold tracking-tight text-neutral-dark">Configuração inicial</h2>
         <p className="text-sm text-slate-500">Cadastro do primeiro supervisor mestre</p>
       </div>
 
@@ -85,18 +85,21 @@ export const SetupInitialForm: React.FC<SetupInitialFormProps> = ({ onSuccess })
         </span>
       </div>
 
-      {errorMessage && (
-        <div
-          role="alert"
-          className="flex items-start gap-2.5 p-3 text-xs bg-red-50 border border-red-200 text-red-700 rounded-md animate-in fade-in duration-200"
-        >
-          <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
-          <span className="leading-tight">{errorMessage}</span>
-        </div>
-      )}
+      {/* Slot reservado para mensagens com Zero Layout Shift (CLS = 0) */}
+      <div className="min-h-[44px] flex items-center" aria-live="polite">
+        {errorMessage ? (
+          <div
+            role="alert"
+            className="w-full flex items-start gap-2.5 px-3 py-2.5 text-xs bg-red-50 border border-red-200 text-red-700 rounded-md animate-in fade-in duration-150"
+          >
+            <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+            <span className="leading-tight">{errorMessage}</span>
+          </div>
+        ) : null}
+      </div>
 
       <div className="space-y-1.5 text-left">
-        <Label htmlFor="setup-fullname">Nome Completo do Supervisor</Label>
+        <Label htmlFor="setup-fullname">Nome completo do supervisor</Label>
         <Input
           id="setup-fullname"
           type="text"
@@ -113,7 +116,7 @@ export const SetupInitialForm: React.FC<SetupInitialFormProps> = ({ onSuccess })
 
       <div className="space-y-1.5 text-left">
         <div className="flex items-center justify-between">
-          <Label htmlFor="setup-email">E-mail Corporativo</Label>
+          <Label htmlFor="setup-email">E-mail corporativo</Label>
           {email && (
             <span className="text-[11px] font-medium flex items-center gap-1">
               {isEmailValidDomain ? (
@@ -143,7 +146,7 @@ export const SetupInitialForm: React.FC<SetupInitialFormProps> = ({ onSuccess })
 
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1.5 text-left">
-          <Label htmlFor="setup-password">Senha Mestra</Label>
+          <Label htmlFor="setup-password">Senha mestra</Label>
           <Input
             id="setup-password"
             type="password"
@@ -160,7 +163,7 @@ export const SetupInitialForm: React.FC<SetupInitialFormProps> = ({ onSuccess })
         </div>
 
         <div className="space-y-1.5 text-left">
-          <Label htmlFor="setup-confirm">Confirmar Senha</Label>
+          <Label htmlFor="setup-confirm">Confirmar senha</Label>
           <Input
             id="setup-confirm"
             type="password"
@@ -184,7 +187,7 @@ export const SetupInitialForm: React.FC<SetupInitialFormProps> = ({ onSuccess })
         disabled={isLoading}
       >
         <Sparkles className="w-4 h-4" />
-        {isLoading ? 'Configurando...' : 'Inicializar Sistema e Entrar'}
+        {isLoading ? 'Configurando...' : 'Inicializar sistema e entrar'}
       </Button>
     </form>
   );

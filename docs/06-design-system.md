@@ -137,3 +137,4 @@ Para tirar dúvidas na bancada sem poluir a interface:
 | **Fundo pêssego sobre container cinza** | Gera atrito cromático feio entre tom quente e tom neutro. | Usar pêssego apenas sobre superfícies brancas. No cinza, usar pílula branca. |
 | **Dois botões primários na mesma tela** | O cérebro do operador não sabe qual é a ação recomendada. | Apenas 1 botão primário por contexto. O resto é secundário ou ghost. |
 | **Title Case ("Caderno De Turno")** | Padrão anglo-saxão artificial com conflito de preposições em português. | 100% **Sentence case** ("Caderno de turno"). |
+| **Layout Shift (CLS) em mensagens de erro/validação** | Empurra campos e botões repentinamente ao surgir um alerta, quebrando a memória muscular e causando cliques errados. | Deixar **espaço reservado** com altura pré-alocada (`min-h-[44px]`) ou exibir em **popover/badge sobreposto** sem alterar a geometria do layout. |

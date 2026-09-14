@@ -11,10 +11,11 @@ interface LoginFormProps {
 }
 
 /**
- * Formulário de Login Nominal do Dia a Dia (Operador e Supervisor).
+ * Formulário de login nominal do dia a dia (operador e supervisor).
+ * Autenticação estritamente por nome de usuário e senha.
  */
 export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToFirstAccess, onSuccess }) => {
-  const [usernameOrEmail, setUsernameOrEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -24,13 +25,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToFirstAccess, onS
     e.preventDefault();
     setErrorMessage(null);
 
-    if (!usernameOrEmail.trim() || !password) {
-      setErrorMessage('Informe seu usuário ou e-mail corporativo e senha.');
+    if (!username.trim() || !password) {
+      setErrorMessage('Informe seu usuário e senha.');
       return;
     }
 
     try {
-      await login(usernameOrEmail, password);
+      await login(username.trim(), password);
       onSuccess?.();
     } catch (err: any) {
       setErrorMessage(err.message || 'Falha ao autenticar. Verifique suas credenciais.');
@@ -39,31 +40,34 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToFirstAccess, onS
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full" noValidate>
-      <div className="space-y-1 text-left">
-        <h2 className="text-xl font-bold tracking-tight text-neutral-dark">Acesso ao Sistema</h2>
-        <p className="text-sm text-slate-500">Identificação nominal do operador LD2</p>
+      {/* Título sem subtítulo conforme aprovado */}
+      <div className="text-left">
+        <h2 className="text-xl font-bold tracking-tight text-neutral-dark">Acesso ao sistema</h2>
       </div>
 
-      {errorMessage && (
-        <div
-          role="alert"
-          className="flex items-start gap-2.5 p-3 text-xs bg-red-50 border border-red-200 text-red-700 rounded-md animate-in fade-in duration-200"
-        >
-          <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
-          <span className="leading-tight">{errorMessage}</span>
-        </div>
-      )}
+      {/* Slot reservado para mensagens com Zero Layout Shift (CLS = 0) */}
+      <div className="min-h-[44px] flex items-center" aria-live="polite">
+        {errorMessage ? (
+          <div
+            role="alert"
+            className="w-full flex items-start gap-2.5 px-3 py-2.5 text-xs bg-red-50 border border-red-200 text-red-700 rounded-md animate-in fade-in duration-150"
+          >
+            <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+            <span className="leading-tight">{errorMessage}</span>
+          </div>
+        ) : null}
+      </div>
 
       <div className="space-y-1.5 text-left">
-        <Label htmlFor="login-identifier">Usuário ou E-mail Corporativo</Label>
+        <Label htmlFor="login-username">Usuário</Label>
         <Input
-          id="login-identifier"
+          id="login-username"
           type="text"
           autoComplete="username"
-          placeholder="ex: bryan.fernandes ou @br.ajinomoto.com"
-          value={usernameOrEmail}
+          placeholder="nome_sobrenome"
+          value={username}
           onChange={(e) => {
-            setUsernameOrEmail(e.target.value);
+            setUsername(e.target.value);
             if (errorMessage) setErrorMessage(null);
           }}
           disabled={isLoading}
