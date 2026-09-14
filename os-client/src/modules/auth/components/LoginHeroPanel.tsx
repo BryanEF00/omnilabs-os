@@ -67,8 +67,6 @@ export const LoginHeroPanel: React.FC<{ className?: string }> = ({ className }) 
           <br />
           Desenvolvimento II
         </h1>
-        <div className={styles.titleDivider} />
-        <p className={styles.heroSubtitle}>OmniLabs OS - LD2</p>
       </div>
 
       {/* Rodapé & Seletor de Tema */}
@@ -97,7 +95,7 @@ export const LoginHeroPanel: React.FC<{ className?: string }> = ({ className }) 
           </button>
         </div>
         <div className={styles.heroFooter}>
-          <span>Ajinomoto do Brasil © 2026</span>
+          <span>OmniLabs OS • v1.0.0</span>
         </div>
       </div>
     </div>
