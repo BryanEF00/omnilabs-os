@@ -101,8 +101,12 @@ export const LoginCellsContainer: React.FC = () => {
         lastTime = null;
       } else {
         lastTime = null;
-        animId = requestAnimationFrame(loop);
-        scheduleNextMitosis();
+        if (animId === null) {
+          animId = requestAnimationFrame(loop);
+        }
+        if (!mitosisTimeout) {
+          scheduleNextMitosis();
+        }
       }
     };
 

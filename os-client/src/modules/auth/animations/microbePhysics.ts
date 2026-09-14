@@ -121,7 +121,7 @@ export const updateMicrobePhysics = (m: Microbe, w: number, h: number, dt: numbe
   if (splitResult) return splitResult;
 
   const isDividing = m.mitosisProgress > 0;
-  updateOrientation(isDividing ? m : m, isDividing, dt);
+  updateOrientation(m, isDividing, dt);
   updatePosition(m, isDividing, w, h, dt);
 
   return [m];
