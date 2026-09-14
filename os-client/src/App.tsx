@@ -14,7 +14,7 @@ function AuthenticatedApp() {
 
   return (
     <div className="min-h-screen w-full bg-slate-50 flex flex-col">
-      {/* Top Navbar */}
+      {/* Barra Superior de Navegação */}
       <header className="h-14 bg-white border-b border-slate-200 px-6 flex items-center justify-between shadow-xs">
         <div className="flex items-center gap-3">
           <div className="w-3 h-3 rounded-full bg-brand-primary animate-pulse" />
@@ -48,7 +48,7 @@ function AuthenticatedApp() {
         </div>
       </header>
 
-      {/* Main Content Area */}
+      {/* Área Principal de Conteúdo */}
       <main className="flex-1 p-8 max-w-5xl mx-auto w-full flex flex-col gap-6">
         <div className="bg-white p-6 rounded-xl border border-slate-200/80 shadow-xs space-y-3">
           <div className="flex items-center gap-2 text-emerald-600">
@@ -92,7 +92,7 @@ export function App() {
   if (!isInitialized) {
     return (
       <div className="min-h-screen w-full bg-slate-100 flex flex-col items-center justify-center gap-3">
-        <div className="w-8 h-8 border-3 border-slate-300 border-t-brand-primary rounded-full animate-spin" />
+        <div className="w-8 h-8 border-[3px] border-slate-300 border-t-brand-primary rounded-full animate-spin" />
         <span className="text-xs font-semibold text-slate-500 tracking-wider uppercase">
           OmniLabs OS • Carregando...
         </span>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LoginHeroPanel } from '../components/LoginHeroPanel';
 import { LoginForm } from '../components/LoginForm';
 import { FirstAccessForm } from '../components/FirstAccessForm';
@@ -18,7 +19,13 @@ interface AuthPageProps {
  */
 export const AuthPage: React.FC<AuthPageProps> = ({ initialMode = 'login' }) => {
   const [mode, setMode] = useState<AuthMode>(initialMode);
+  const navigate = useNavigate();
   const { setupRequired } = useAuthStore();
+
+  // Sincroniza o modo quando a prop initialMode mudar (ex: navegação do browser)
+  useEffect(() => {
+    setMode(initialMode);
+  }, [initialMode]);
 
   // Força o modo de setup caso o sistema esteja no Dia Zero
   useEffect(() => {
@@ -26,6 +33,16 @@ export const AuthPage: React.FC<AuthPageProps> = ({ initialMode = 'login' }) => 
       setMode('setup');
     }
   }, [setupRequired]);
+
+  const handleSwitchToLogin = () => {
+    setMode('login');
+    navigate('/login');
+  };
+
+  const handleSwitchToFirstAccess = () => {
+    setMode('first-access');
+    navigate('/primeiro-acesso');
+  };
 
   return (
     <div className="min-h-screen w-full bg-slate-100 flex items-center justify-center p-3 sm:p-6 md:p-8 select-none">
@@ -41,9 +58,9 @@ export const AuthPage: React.FC<AuthPageProps> = ({ initialMode = 'login' }) => 
             {mode === 'setup' || setupRequired ? (
               <SetupInitialForm />
             ) : mode === 'first-access' ? (
-              <FirstAccessForm onSwitchToLogin={() => setMode('login')} />
+              <FirstAccessForm onSwitchToLogin={handleSwitchToLogin} />
             ) : (
-              <LoginForm onSwitchToFirstAccess={() => setMode('first-access')} />
+              <LoginForm onSwitchToFirstAccess={handleSwitchToFirstAccess} />
             )}
           </div>
         </div>
