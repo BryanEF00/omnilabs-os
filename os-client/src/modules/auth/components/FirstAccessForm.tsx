@@ -22,7 +22,10 @@ export const FirstAccessForm: React.FC<FirstAccessFormProps> = ({ onSwitchToLogi
 
   const { firstAccess, isLoading } = useAuthStore();
 
-  const isEmailValidDomain = email.toLowerCase().endsWith('@br.ajinomoto.com');
+  const isEmailValidDomain =
+    email.includes('@') &&
+    email.toLowerCase().endsWith('@br.ajinomoto.com') &&
+    email.split('@')[0].trim().length > 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
