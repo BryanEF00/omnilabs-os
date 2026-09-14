@@ -24,6 +24,12 @@
 10. **Sincronização Contínua com GitHub**: Todo e qualquer commit validado e realizado no repositório local deve ser imediatamente enviado ao GitHub via `git push`, mantendo o repositório remoto sempre espelhado e pronto para ser consumido na máquina do laboratório.
 11. **Commits Atômicos Automáticos por Marco Validado**: O agente deve agir de forma proativa na persistência do código, sem que o Bryan precise solicitar ou lembrar de salvar. Assim que qualquer unidade lógica for concluída e validada (compilação limpa no `npm run build` / `tsc` e testes 100% verdes no `npm test`), o agente deve imediatamente realizar o commit semântico (padrão *Conventional Commits*) e executar o `git push` para o GitHub.
 12. **Portabilidade Multi-máquina & Caminhos Estritamente Relativos**: Nunca utilizar caminhos absolutos ou letras de unidade (`C:`, `D:`) em código, scripts, testes, configurações ou documentação. O Bryan desenvolve em múltiplas máquinas (notebook, desktop de casa, computador da bancada do LD2). Toda resolução de caminhos deve ser 100% relativa à raiz do projeto ou ao arquivo em execução (`import.meta.url`, `process.cwd()`, links relativos em Markdown).
+13. **Protocolo Obrigatório de Proposta e Preview Visual de UI antes de Implementar**:
+   - Diante de qualquer feedback do Bryan, novo componente, ajuste de layout ou mudança visual:
+     1. **Proposta Conceitual**: Explicar com clareza a solução pretendida e o porquê técnico em linguagem humana.
+     2. **Preview Visual Obrigatório**: Criar sempre uma demonstração visual prévia (mockup interativo HTML, artefato de visualização ou demonstração gráfica no chat) para que o Bryan veja e avalie exatamente como vai ficar na prática antes de qualquer alteração de código no projeto.
+     3. **Aguardar Aprovação Explícita**: NUNCA alterar arquivos de código do projeto nem fazer commits sem que o Bryan tenha visto o preview e aprovado explicitamente a proposta ("Parar e aguardar").
+     4. **Implementação Pós-Aprovação**: Somente após o "aprovado" do Bryan, o código é aplicado nos arquivos, verificado com build/testes e commitado.
 
 ---
 
