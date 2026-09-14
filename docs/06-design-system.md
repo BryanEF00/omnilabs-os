@@ -38,39 +38,64 @@ Todas as combinações de texto e fundo devem respeitar rigorosamente o nível *
 
 ## 3. Taxonomia Rigorosa de Botões & Hierarquia de Ação
 
-Inspirado nos maiores Design Systems do mundo (Shopify Polaris, GitHub Primer e Stripe Sail), as ações não são divididas por departamentos arbitrários. Os botões comunicam **hierarquia pura e inequívoca de importância**:
+Inspirado nos maiores Design Systems do mundo (Shopify Polaris, GitHub Primer e Stripe Sail), as ações não são divididas por departamentos arbitrários. Os botões comunicam **hierarquia pura e inequívoca de importância**.
 
-### 3.1. Botão Primário Único (Vermelho Oficial Ajinomoto `#de3636`)
-* **Propósito**: É a **ação principal e recomendada de avanço/confirmação** em qualquer tela, modal ou formulário do sistema, sem exceção.
-* **Exemplos**: `"Gravar ocorrência"`, `"Entrar no sistema"`, `"Iniciar turno"`, `"Cadastrar analista"`, `"Salvar configurações"`.
-* **Visual**: Fundo Vermelho Ajinomoto sólido (`bg-[#de3636] text-white`).
-* **Física**: Sem borda aparente, sombra sutil em repouso (`shadow-xs`), leve elevação (`shadow-md`) e microbrilho no hover.
-* **Regra Inegociável de Ergonomia**: **Existe apenas 1 botão primário por contexto/tela**. O operador nunca hesita: vermelho significa "Confirmar / Gravar / Avançar".
+### A Regra de Ouro (Outline vs. Ghost):
+* **Ghost é para SAIR / CANCELAR (Passivo)**: Não possui borda nem corpo para não concorrer com o botão primário de confirmação.
+* **Outline é para CONSTRUIR / FILTRAR (Ativo)**: Possui borda física para se alinhar em altura (38px) e presença junto a caixas de texto e barras de ferramentas.
 
 ---
 
-### 3.2. Botão Secundário / Descarte (Cinza Neutro Suave `#f5f5f5`)
-* **Propósito**: Ações de apoio, cancelamento, descarte ou fechamento que não devem concorrer visualmente com o botão primário.
-* **Visual**: Fundo Cinza Neutro Suave (`bg-neutral-100 hover:bg-neutral-200 text-neutral-700 hover:text-neutral-950`).
-* **Física**: Sem borda aparente, mesma altura (38px) do primário. No hover, o texto salta para quase preto semi-bold.
+### 3.1. Botão Primário Único (Vermelho Oficial Ajinomoto `#de3636`)
+* **Propósito**: A **ação principal e recomendada de avanço/confirmação** em qualquer tela, modal ou formulário do sistema.
+* **Exemplos**: `"Gravar ocorrência"`, `"Entrar no sistema"`, `"Iniciar turno"`, `"Cadastrar analista"`, `"Salvar configurações"`.
+* **Visual**: Fundo Vermelho Ajinomoto sólido (`bg-[#de3636] text-white`).
+* **Física**: Sem borda aparente, sombra sutil em repouso (`shadow-xs`), leve elevação (`shadow-md`) e microbrilho no hover.
+* **Regra Inegociável**: **Apenas 1 botão primário por contexto/tela**. O operador nunca hesita: vermelho significa "Confirmar / Gravar / Avançar".
+
+---
+
+### 3.2. Botão Ghost (Transparente com Texto Dinâmico)
+* **Propósito**: Ações de saída, descarte ou cancelamento em modais e formulários.
+* **Visual em Repouso**: Fundo 100% transparente com texto cinza neutro (`text-neutral-500 font-medium`).
+* **Física no Hover**: Ganha base cinza suave (`hover:bg-neutral-100`) e o **texto salta para quase preto semi-bold (`hover:text-neutral-950`)**, fornecendo feedback tátil imediato sem poluição visual prévia.
 * **Exemplos**: `"Cancelar"`, `"Voltar"`, `"Limpar"`, `"Fechar"`.
 
 ---
 
-### 3.3. Botão de Inteligência & Ações de Dados (Azul Índigo Japonês `#1e40af`)
-* **Propósito**: O azul índigo (`Aiiro`) é reservado exclusivamente para **consumo e exportação de dados laboratoriais**.
-* **Exemplos**: `"Exportar Excel"`, `"Imprimir caderno de turno"`, `"Gerar relatório semanal"`.
-* **Regra**: O botão azul nunca concorre com o formulário de gravação; ele é o atalho para inteligência e relatórios do laboratório.
+### 3.3. Botão Secundário (Outline com Borda Sutil)
+* **Propósito**: Ações ativas de apoio, inserções secundárias ou filtros que dividem espaço com campos de texto.
+* **Visual**: Fundo branco ou neutro suave com borda cinza clara (`bg-white border border-neutral-300 text-neutral-700`).
+* **Física no Hover**: Borda ligeiramente mais escura (`hover:border-neutral-400`), fundo cinza suave (`hover:bg-neutral-50`) e texto quase preto (`hover:text-neutral-950`).
+* **Exemplos**: `"Filtros"`, `"Adicionar parâmetro"`, `"Anexar nota"`.
 
 ---
 
-### 3.4. Ações Destrutivas (Exclusão Segura)
-A exclusão nunca deve parecer uma ação primária comum:
-* **Em Formulários / Modais de Confirmação**: Fundo rosado suave (`bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-600 hover:text-white`). O botão só ganha força vermelha se o usuário passar o mouse para confirmar a intenção real de deletar.
-* **Em Cards e Tabelas (Botões Ghost)**:
-  * **Repouso**: A lixeira é cinza neutro e transparente (`text-neutral-400`). Ela se camufla perfeitamente na superfície branca do card, garantindo que um feed com 40 ocorrências não pareça um cemitério cheio de manchas vermelhas.
-  * **Hover**: Ao passar o mouse na lixeira, ela acende imediatamente em fundo rosado suave com o ícone em vermelho carmesim (`hover:bg-rose-50 hover:text-rose-600`).
-  * **Lápis de Edição**: Transparente em repouso; no hover ganha fundo cinza suave com ícone preto escuro (`hover:bg-neutral-100 hover:text-neutral-900`).
+### 3.4. Botão Destrutivo Seguro (Alerta de Perigo)
+* **Propósito**: Exclusões permanentes e cancelamentos com risco de perda de dados.
+* **Visual em Repouso**: Fundo rosado suave com borda sutil e texto carmesim (`bg-rose-50 border border-rose-200 text-rose-700 font-medium`).
+* **Física no Hover**: Acende com fundo vermelho sólido e texto branco (`hover:bg-rose-600 hover:text-white`), garantindo que o operador só sinta o impacto do perigo se tiver a intenção real de deletar.
+* **Exemplos**: `"Excluir lote"`, `"Descartar amostra"`, `"Revogar acesso"`.
+
+---
+
+### 3.5. Botões de Ícone (Ghost Icons de 32x32px)
+* **Propósito**: Ações rápidas em linha dentro de cards do feed ou células de tabelas densas, sem ocupar largura de tela com rótulos de texto.
+* **Edição / Atualização**: Ícone cinza neutro em repouso (`text-neutral-400`); no hover ganha fundo cinza e ícone preto escuro (`hover:text-neutral-950 hover:bg-neutral-100`).
+* **Lixeira Ghost**: Ícone cinza transparente em repouso (`text-neutral-400`); no hover acende imediatamente em fundo rosado suave com ícone vermelho carmesim (`hover:text-rose-600 hover:bg-rose-50`). Evita o efeito "cemitério de manchas vermelhas" em listas com dezenas de itens.
+
+---
+
+### 3.6. Botão de Link / Inline (Hiperlink de Ação)
+* **Propósito**: Navegação secundária sem formato de caixa, ideal para fluxos auxiliares.
+* **Visual**: Texto cinza (`text-neutral-500 underline underline-offset-4`) que escurece para preto no hover (`hover:text-neutral-950`).
+* **Exemplos**: `"Ver histórico completo →"`, `"Esqueci minha senha"`.
+
+---
+
+### 3.7. Botão de Inteligência & Ações de Dados (Azul Índigo Japonês `#1e40af`)
+* **Propósito**: O azul índigo (`Aiiro`) é reservado exclusivamente para consumo e exportação de relatórios científicos e dados laboratoriais.
+* **Exemplos**: `"Exportar Excel"`, `"Imprimir caderno de turno"`, `"Gerar laudo semanal"`.
 
 ---
 
