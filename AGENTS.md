@@ -23,6 +23,7 @@
    - **Alarme Sentinela Ativo**: Todo processo longo enviado para segundo plano deve ser acompanhado de um timer via ferramenta `schedule` (máximo 30s a 60s) para auditar os logs e o status. Se o log tiver 0 bytes ou o processo estagnar, abortar imediatamente (`kill`) e investigar o motivo com o Bryan, eliminando esperas cegas no escuro.
 10. **Sincronização Contínua com GitHub**: Todo e qualquer commit validado e realizado no repositório local deve ser imediatamente enviado ao GitHub via `git push`, mantendo o repositório remoto sempre espelhado e pronto para ser consumido na máquina do laboratório.
 11. **Commits Atômicos Automáticos por Marco Validado**: O agente deve agir de forma proativa na persistência do código, sem que o Bryan precise solicitar ou lembrar de salvar. Assim que qualquer unidade lógica for concluída e validada (compilação limpa no `npm run build` / `tsc` e testes 100% verdes no `npm test`), o agente deve imediatamente realizar o commit semântico (padrão *Conventional Commits*) e executar o `git push` para o GitHub.
+12. **Portabilidade Multi-máquina & Caminhos Estritamente Relativos**: Nunca utilizar caminhos absolutos ou letras de unidade (`C:`, `D:`) em código, scripts, testes, configurações ou documentação. O Bryan desenvolve em múltiplas máquinas (notebook, desktop de casa, computador da bancada do LD2). Toda resolução de caminhos deve ser 100% relativa à raiz do projeto ou ao arquivo em execução (`import.meta.url`, `process.cwd()`, links relativos em Markdown).
 
 ---
 
@@ -38,10 +39,10 @@ Ao iniciar uma nova conversa:
 
 | Assunto / Necessidade | Arquivo de Referência |
 | :--- | :--- |
-| **Contexto Vivo, Fase Atual & Decisões** | [`PROJECT_CONTEXT.md`](file:///d:/Projetos/omnilabs-os/PROJECT_CONTEXT.md) |
-| **Regras de Negócio e Requisitos do LD2** | [`docs/01-prd-requirements.md`](file:///d:/Projetos/omnilabs-os/docs/01-prd-requirements.md) |
-| **Arquitetura, Stack, Testes & Subagentes** | [`docs/02-core-architecture.md`](file:///d:/Projetos/omnilabs-os/docs/02-core-architecture.md) |
-| **Modelos de Dados, Prisma Schema & Fluxos** | [`docs/03-data-models-flows.md`](file:///d:/Projetos/omnilabs-os/docs/03-data-models-flows.md) |
-| **Roteiro de Fases & Metas (Outubro/2026)** | [`docs/04-scope-roadmap.md`](file:///d:/Projetos/omnilabs-os/docs/04-scope-roadmap.md) |
-| **Padrões de Nomenclatura e Código** | [`docs/05-coding-standards.md`](file:///d:/Projetos/omnilabs-os/docs/05-coding-standards.md) |
-| **Design System, Cores & Ergonomia (OmniDS)** | [`docs/06-design-system.md`](file:///d:/Projetos/omnilabs-os/docs/06-design-system.md) |
+| **Contexto Vivo, Fase Atual & Decisões** | [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md) |
+| **Regras de Negócio e Requisitos do LD2** | [`docs/01-prd-requirements.md`](docs/01-prd-requirements.md) |
+| **Arquitetura, Stack, Testes & Subagentes** | [`docs/02-core-architecture.md`](docs/02-core-architecture.md) |
+| **Modelos de Dados, Prisma Schema & Fluxos** | [`docs/03-data-models-flows.md`](docs/03-data-models-flows.md) |
+| **Roteiro de Fases & Metas (Outubro/2026)** | [`docs/04-scope-roadmap.md`](docs/04-scope-roadmap.md) |
+| **Padrões de Nomenclatura e Código** | [`docs/05-coding-standards.md`](docs/05-coding-standards.md) |
+| **Design System, Cores & Ergonomia (OmniDS)** | [`docs/06-design-system.md`](docs/06-design-system.md) |
