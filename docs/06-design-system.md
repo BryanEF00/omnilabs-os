@@ -8,9 +8,13 @@
 
 Inspirado na ergonomia de ambientes de alta produtividade como o **Antigravity 2.0**, **Linear** e **macOS**:
 
+* **Arquitetura de Tema: Modo Light Exclusivo (Decisão Arquitetural)**:
+  * **Zero Dark Mode no MVP**: A bancada do LD2 opera 24/7 sob lâmpadas fluorescentes brancas industriais. Telas escuras geram reflexos incômodos no monitor e dificultam a leitura com óculos de proteção e luvas.
+  * **Identidade Japonesa Ajinomoto**: Fundo claro e limpo com acentos no Vermelho Oficial Ajinomoto homenageia a identidade visual corporativa da empresa.
+  * **Fundo de Descanso Óptico (`#f8fafc`)**: O fundo de tela geral é um cinza gelo suave (Slate 50), e nunca branco 100% estourado, garantindo descanso visual prolongado aos operadores, inclusive no 3º Turno.
 * **Layout de Painel Dividido (Split Workspace)**:
   * **Sidebar Lateral Fixa à Esquerda**: Fundo próprio com contraste evidente em relação à tela central, abrigando a marca Ajinomoto e os módulos de navegação. Os itens flutuam diretamente sobre ela, com indicador de estado ativo evidente e elegante.
-  * **Área de Trabalho Principal à Direita**: Fundo cinza suave de descanso visual (`#f8fafc` / `#f4f4f5`) com cards e superfícies de trabalho em branco puro (`#ffffff`) que flutuam através de sombras leves e elevação óptica, sem a necessidade de contornos ou bordas pesadas.
+  * **Área de Trabalho Principal à Direita**: Fundo cinza suave de descanso visual (`#f8fafc`) com cards e superfícies de trabalho em branco puro (`#ffffff`) que flutuam através de sombras leves (`shadow-xs`) e elevação óptica, sem contornos pesados.
 * **Economia Cognitiva (As 4 Proibições Formais)**:
   1. **Anti-aninhamento ("Card Inception" Banido)**: Proibido delimitar caixas dentro de caixas. A organização interna de um painel é feita com tipografia e espaçamento (grade de 4px/8px), nunca com bordas redundantes.
   2. **Zero Pleonasmos Contextuais**: Se o operador está no módulo do LD2, as telas são *"Caderno de turno"*, *"Atividades de rotina"*, *"Cronograma semanal"*. Proibido carimbar *"do LD2"* em cada título.
@@ -31,8 +35,17 @@ Todas as combinações de texto e fundo devem respeitar rigorosamente o nível *
 | **`bg-surface`** | `#ffffff` | **Superfície de Cards e Painéis**. Branco puro com sombra sutil (`shadow-xs` a `shadow-sm`). | Proibido empilhar cards brancos dentro de cards brancos. |
 | **`neutral-soft`** | `#f5f5f5` | **Cinza Neutro Puro (Sem azulado)**. Fundo de botões secundários e trilhos de filtros. | Proibido usar tons azulados de slate quando o objetivo for neutralidade. |
 | **`neutral-dark`** | `#0f172a` | **Dark Slate / Obsidiana**. Texto principal de altíssimo contraste e tooltips informativos escuros. | Proibido usar cinza claro para textos de leitura crítica. |
-| **`action-indigo`** | `#1e40af` | **Azul Índigo Japonês (`Aiiro`)**. Cor terciária para ações de dados: relatórios, exportar Excel e gráficos. | Proibido usar para botões de confirmação simples de formulário. |
+| **`action-indigo`** | `#2563eb` | **Azul Índigo Japonês**. Curvas cinéticas em gráficos de fermentação e badge de status "Em curso". | Proibido usar como cor de botão de ação (para não competir com o vermelho). |
 | **`status-danger`** | `#dc2626` | **Carmesim de Alerta / Erro**. Mensagens de falha e limpezas atrasadas, **sempre acompanhado de ícone de aviso**. | Proibido usar sem ícone (o operador pode confundir com o vermelho da marca). |
+
+### 2.1. Matriz Semântica dos 5 Status (Semáforo Biológico)
+Badges e pílulas de status utilizam sempre a técnica moderna de **fundo pastel suave (tom 50) + borda fina (tom 200) + texto escuro (tom 800) + ícone contextual**:
+
+1. **Verde (`#059669` / `bg-emerald-50 text-emerald-800 border-emerald-200`)**: Concluído, normal, parâmetro biológico dentro da faixa ideal. (Ícone: checkmark `✓`).
+2. **Âmbar / Mel (`#d97706` / `bg-amber-50 text-amber-800 border-amber-200`)**: Pendente, atenção preventiva, atividade que vence hoje. (Ícone: relógio ou triângulo suave). *Evita o amarelo-limão puro que ofusca no modo light*.
+3. **Vermelho Carmesim (`#dc2626` / `bg-rose-50 text-rose-800 border-rose-200`)**: Limpeza atrasada, falha crítica ou desvio biológico. (Ícone de perigo obrigatório).
+4. **Azul Índigo (`#2563eb` / `bg-blue-50 text-blue-800 border-blue-200`)**: Em curso, fermentação ativa, alimentação ligada e destaque de métricas. (Ícone de pulso ativo).
+5. **Cinza Neutro (`#64748b` / `bg-neutral-100 text-neutral-700 border-neutral-200`)**: Informativo geral, comunicados e notas sem prazo ou criticidade. (Ícone: `ℹ`).
 
 ---
 
@@ -93,17 +106,20 @@ Inspirado nos maiores Design Systems do mundo (Shopify Polaris, GitHub Primer e 
 
 ---
 
-### 3.7. Botão de Inteligência & Ações de Dados (Azul Índigo Japonês `#1e40af`)
-* **Propósito**: O azul índigo (`Aiiro`) é reservado exclusivamente para consumo e exportação de relatórios científicos e dados laboratoriais.
-* **Exemplos**: `"Exportar Excel"`, `"Imprimir caderno de turno"`, `"Gerar laudo semanal"`.
+### 3.7. Ações de Exportação e Relatórios (Excel e Laudos)
+* **Padrão Adotado**: Utilizam o **Botão Secundário (Outline com Ícone)** (ex.: `[ 📥 Exportar Excel ]`).
+* **Regra de Ergonomia**: Proibido criar botões sólidos azuis que concorram visualmente com o botão primário vermelho. Toda exportação tem presença limpa e discreta via Outline.
 
 ---
 
-## 4. Tooltips Informativos, Popovers & Badges
+## 4. Tooltips Informativos, Popovers & Ajuda Contextual
 
 Para tirar dúvidas na bancada sem poluir a interface:
+* **Botão de Ajuda Contextual `[ ? ]`**:
+  * Botão circular discreto cinza (`w-4 h-4 rounded-full bg-neutral-200 text-neutral-600 hover:bg-neutral-800 hover:text-white text-[10px] font-bold`) posicionado ao lado de siglas ou parâmetros laboratoriais.
+  * Ao passar o mouse (hover) ou clicar, dispara o **Dark Tooltip Universal**.
 * **Dark Tooltip Universal**:
-  * Ao passar o mouse sobre siglas técnicas (`vvm`, `DO`, `RPM`, `pH`), parâmetros ou textos compactados:
+  * Ao passar o mouse sobre o botão `[ ? ]` ou siglas técnicas (`vvm`, `DO`, `RPM`, `pH`):
   * Abre uma caixa preta de alta autoridade (`bg-neutral-900 text-white text-[11px] font-medium px-2.5 py-1.5 rounded-md shadow-lg`).
   * O contraste preto sobre branco garante legibilidade instantânea sob as lâmpadas fluorescentes da bancada.
 * **Segmented Controls (Filtros de Abas "Hoje / Semana / Mês")**:
