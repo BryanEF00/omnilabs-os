@@ -109,42 +109,13 @@ O escopo de Outubro substitui e unifica as aplicações isoladas e planilhas par
 
 ---
 
-## 6. Progresso da Engenharia & Status da Fase 1
+## 6. Progresso da Engenharia & Memória Viva
 
-* **Fase Atual**: **Fase 1 - Fundação, Monorepo, Banco Criptografado & Autenticação Nominal**.
-* **Entregas Concluídas**:
-  - Monorepo configurado com workspaces (`core-server`, `os-client`, `e2e-tests`).
-  - Autoboot criptográfico com geração segura de chaves (AES-256 e HMAC-SHA256 via CSPRNG de 256 bits).
-  - Banco de dados SQLite integrado com **SQLCipher** via `better-sqlite3-multiple-ciphers` e **Drizzle ORM** com modo WAL ativado.
-  - As 6 tabelas relacionais de governança criadas e migradas: `users`, `work_shifts`, `work_shift_schedules`, `user_shift_assignments`, `system_modules`, `user_module_permissions`.
-  - Blindagem OWASP Top 10:
-    - Mascaramento global de erros (`setErrorHandler` no Fastify, zero stack traces ou caminhos expostos).
-    - Proteção de cabeçalhos HTTP com `@fastify/helmet`.
-    - Cookies seguros com flag `HttpOnly` e `SameSite=Lax` (blindados contra roubo XSS).
-    - Validação de entrada estrita com Zod (domínio obrigatório `@br.ajinomoto.com` e separador `_`).
-    - Proteção anti-enumeração de usuários (respostas 401 uniformes para login).
-  - Módulo de Autenticação e Governança Nominal implementado:
-    - Setup do 1º Supervisor (trancamento definitivo anti-invasão).
-    - Convite de operadores e Primeiro Acesso com extração de username.
-    - Login nominal com hash `bcrypt` e tokens JWT (12h de expiração para o turno).
-    - Consulta de sessão `/me` e logout seguro.
-  - Suíte de testes do Vitest (TDD) com **11 testes passando 100%** (tempo de execução: ~1.6s).
-  - Especificação formal do **OmniDS (Design System & Ergonomia Visual)** documentada em [`docs/06-design-system.md`](docs/06-design-system.md) (Modo Light exclusivo com fundo de descanso `#f8fafc`, hierarquia universal com botão primário único em Vermelho Ajinomoto, matriz de 5 status semânticos, botão `[ ? ]` contextual, regras WCAG e anti-padrões).
-  - **Frontend SPA (`os-client`) Construído e Integrado**:
-    - Scaffolding completo com Vite 6, React 18, TypeScript e Tailwind CSS com tokens do OmniDS.
-    - Componentes e primitivas UI baseados no shadcn/ui e Radix UI com logotipo oficial pristine da Ajinomoto em SVG (`AjinomotoLogo`).
-    - Tela de Acesso em arquitetura **Split-Screen Dual-Panel**:
-      - **Coluna Esquerda (Hero)**: Identidade visual oficial Ajinomoto (Pantone 186 C `#de3636`), títulos institucionais e as **3 animações biológicas** do protótipo (`Bubbles` de CO2 procedural, `Waves` com gotas em escorrimento de vidro e `Cells` em Canvas 2D com nado browniano e mitose ótica simétrica).
-      - **Sentinela 24/7 Sleep Guard**: Pausa imediata de timers e RAF do Canvas quando `document.hidden === true`, economizando ciclos de CPU/GPU nas máquinas da bancada.
-      - **Coluna Direita (Governança)**: Formulários nominais com validação estrita (`LoginForm`, `FirstAccessForm` com máscara `@br.ajinomoto.com` e `SetupInitialForm` para Dia Zero).
-    - Cliente HTTP nativo (`api.ts`) com caminhos 100% relativos (`/api/v1/...`) e cookies seguros `HttpOnly` (`credentials: 'include'`).
-    - Store Zustand (`authStore.ts`) com verificação preventiva de sessão (`checkSession`), prevenção de flash (FOUC) e sanitização no logout.
-    - Roteamento declarativo com React Router DOM v7 (`/login`, `/primeiro-acesso`, `/setup`, `/`) e shell autenticada provisória de recepção nominal do operador.
-    - **Refinamento Visual & Governança de UI da Tela de Acesso**:
-      - Hero Panel padronizado com cabeçalho limpo, novo seletor de animações em vidro acetinado translúcido e rodapé com marca d'água (`OmniLabs OS • v1.0.0`).
-      - Formulário de login estritamente por `username` nominal, sem subtítulo e com slot de feedback pré-alocado para **Zero Layout Shift (CLS = 0)**.
-      - **Fluxo de Trabalho Oficial Estabelecido**: Todo e qualquer ajuste de UI exige obrigatoriamente proposta conceitual + **preview visual prévio** + aprovação explícita do Bryan antes de qualquer codificação (Regra 13 do `AGENTS.md`).
-* **Próxima Etapa (Fase 2)**:
-  - **Caderno de Turno Digital & Passagem de Turno**: Implementação do modelo de dados de turnos, feed de ocorrências com imutabilidade, quadro Kanban de pendências e avisos, e colaboração em tempo real para a passagem de turno.
+Para manter a documentação do projeto ágil, enxuta e sem injeção desnecessária de tokens, o acompanhamento detalhado da engenharia foi desacoplado em dois arquivos de referência contínua:
+
+* **Histórico Consolidado (O que já foi feito)**: [`docs/completed-work.md`](docs/completed-work.md)
+  * Registro completo de infraestrutura, banco criptografado, testes automatizados e telas implementadas.
+* **Memória Viva (Onde paramos & O que falta fazer)**: [`docs/pending-work.md`](docs/pending-work.md)
+  * **Ponto de parada exato de cada sessão**, tarefa imediata em andamento e backlog priorizado das próximas fases. Deve ser consultado e atualizado continuamente a cada ciclo.
 
 

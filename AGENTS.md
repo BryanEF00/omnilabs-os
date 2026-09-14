@@ -37,7 +37,8 @@
 
 Ao iniciar uma nova conversa:
 1. **Git Sync**: Verificar o status do repositório (`git status` / `git pull` quando aplicável) para sincronizar trabalho entre computadores.
-2. **Consulte o Índice abaixo** e leia apenas os arquivos relevantes para a tarefa solicitada, evitando injeção desnecessária de tokens.
+2. **Memória Viva**: Ler [`docs/pending-work.md`](docs/pending-work.md) para saber com precisão cirúrgica **onde paramos e qual é o próximo passo imediato**.
+3. **Consulte o Índice abaixo** e leia apenas os arquivos relevantes para a tarefa solicitada, evitando injeção desnecessária de tokens.
 
 ---
 
@@ -45,7 +46,9 @@ Ao iniciar uma nova conversa:
 
 | Assunto / Necessidade | Arquivo de Referência |
 | :--- | :--- |
-| **Contexto Vivo, Fase Atual & Decisões** | [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md) |
+| **Memória Viva (Onde Paramos & Próximos Passos)** | [`docs/pending-work.md`](docs/pending-work.md) |
+| **Histórico Consolidado de Entregas Realizadas** | [`docs/completed-work.md`](docs/completed-work.md) |
+| **Contexto Geral, Regras do LD2 & Decisões** | [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md) |
 | **Regras de Negócio e Requisitos do LD2** | [`docs/01-prd-requirements.md`](docs/01-prd-requirements.md) |
 | **Arquitetura, Stack, Testes & Subagentes** | [`docs/02-core-architecture.md`](docs/02-core-architecture.md) |
 | **Modelos de Dados, Prisma Schema & Fluxos** | [`docs/03-data-models-flows.md`](docs/03-data-models-flows.md) |
