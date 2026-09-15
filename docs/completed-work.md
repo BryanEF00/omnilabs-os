@@ -66,3 +66,14 @@
 * **Diretrizes e Regras de Governança Estabelecidas**:
   - Regra de Zero Layout Shift documentada formalmente na tabela de anti-padrões de [`docs/06-design-system.md`](06-design-system.md).
   - Regra 13 do [`AGENTS.md`](../AGENTS.md): Obrigatoriedade de proposta conceitual + **preview visual prévio** + aprovação explícita do Bryan antes de qualquer codificação de UI.
+
+* **Calibração Visual Fina & Identidade LD2 (Fechamento da Fase 1)**:
+  - **Tipografia**: Incorporada a família **`Outfit`** (Google Fonts) combinada com `Inter` como fonte padrão do sistema, trazendo curvas arredondadas, estética moderna e leveza visual.
+  - **Mascote & Identidade**: Favicon oficial em SVG do mascote **Ajipanda** (`public/favicon.svg`) e `<title>` da aplicação padronizado para **`LD II - Ajinomoto do Brasil`**.
+  - **Logotipo Ajinomoto**: Redimensionado para **`10rem`** (160px de largura) com diagramação equilibrada via flexbox `gap` e `margin-top: 2.6rem`.
+  - **Tokens de Raio (Border Radius)**: Adicionados os tokens semânticos `card: 1.25rem` (20px) e `card-lg: 1.5rem` (24px) no `tailwind.config.js`. Card principal configurado com `rounded-card-lg` (24px).
+  - **Ergonomia do Formulário**:
+    - Subtítulo explicativo: *"Insira suas credenciais para continuar."*.
+    - Remoção de divisórias rígidas acima do link de ativação de conta.
+    - Hover de linha inteira com sublinhado em *"Primeiro acesso? Ativar conta"*.
+    - Botão primário com estado inativo cinza neutro (`#e2e8f0` / `#94a3b8`) e `cursor-not-allowed` até preenchimento completo dos campos.

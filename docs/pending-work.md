@@ -1,4 +1,4 @@
-# OmniLabs OS - Memória Viva: Onde Paramos & O Que Falta Fazer (`docs/pending-work.md`)
+﻿# OmniLabs OS - Memória Viva: Onde Paramos & O Que Falta Fazer (`docs/pending-work.md`)
 
 > **Finalidade**: Ponto de referência imediato de cada sessão. Registra com precisão cirúrgica o estado atual exato, a tarefa em andamento e o backlog das próximas etapas.
 
@@ -6,46 +6,38 @@
 
 ## 📍 1. Ponto de Parada Atual (Exatamente Onde Estamos)
 
-* **Fase em Execução**: Fase 1 - Fechamento Visual da Camada de Autenticação.
-* **Status Imediato**: Aguardando o Bryan apresentar seus feedbacks visuais e escolhas pessoais para o formulário da coluna da direita (Tela de Acesso / Login).
+* **Fase 1 (Fundação & Calibração Visual do Acesso Dual-Panel)**: **100% Concluída** (identidade visual refinada com Outfit, mascote Ajipanda, logo 10rem, card 24px, 11 testes verdes no backend e build limpo).
+* **Fase em Execução**: **Fase 2 - Blindagem OWASP, Padronização de API (`/api`) & Resiliência de Erros**.
+* **Documentos de Referência Aprovados e Commitados**:
+  - Especificação Técnica: [`docs/superpowers/specs/2026-09-15-phase-2-owasp-and-api-hardening-design.md`](superpowers/specs/2026-09-15-phase-2-owasp-and-api-hardening-design.md)
+  - Plano de Implementação: [`docs/superpowers/plans/2026-09-15-phase-2-owasp-and-api-hardening.md`](superpowers/plans/2026-09-15-phase-2-owasp-and-api-hardening.md)
+* **Status Imediato**: Bryan lendo/revisando o plano de implementação da Fase 2 para dar o aval de início de execução.
 * **Servidores Ativos**:
   - Frontend (`os-client`): `http://localhost:5173/` (Vite SPA).
   - Backend (`core-server`): `http://localhost:3000/` (Fastify com SQLCipher).
-* **Protocolo Operacional Ativo (Regra 13 do `AGENTS.md`)**:
-  - Todo e qualquer feedback ou proposta de ajuste de UI exige obrigatoriamente:
-    1. **Proposta Conceitual** explicada de forma clara e humana.
-    2. **Preview Visual Obrigatório** (mockup interativo HTML ou demonstração visual no chat) para que o Bryan teste e veja como vai ficar na prática antes de qualquer código ser alterado.
-    3. **Aprovação Explícita**: NENHUM arquivo de código do projeto deve ser editado ou commitado antes do "aprovado" do Bryan.
 
 ---
 
-## ⏳ 2. O Que Falta Fazer (Próximos Passos Imediatos)
+## ⏳ 2. O Que Falta Fazer (Próximo Passo Imediato)
 
-### Passo Imediato (Tela de Login / Split-Screen):
-- [ ] Ouvir as escolhas pessoais e feedbacks do Bryan sobre a coluna da direita.
-- [ ] Construir a proposta técnica com preview visual interativo em HTML/artefato.
-- [ ] Apresentar ao Bryan e aguardar aprovação explícita.
-- [ ] Aplicar as alterações nos componentes (`LoginForm.tsx`, etc.), verificar build (`npm run build --workspace=os-client`) e suíte de testes (`npm test`).
-- [ ] Persistir no git com commit convencional atômico e `git push origin main`.
+### Execução da Fase 2 (Passo a Passo via Plano):
+- [ ] **Task 1**: Backend Fastify `setNotFoundHandler` & OWASP 404 Tests (TDD).
+  - Escrever teste no `core-server/tests/auth.test.ts` (Cenário 10) validando 404 sem vazamento de rotas.
+  - Implementar `app.setNotFoundHandler` em `core-server/src/app.ts`.
+  - Validar suíte de testes verdes (`npm test`).
+- [ ] **Task 2**: Padronização Canônica do Cliente HTTP (`api.ts`) sob `/api`.
+  - Ajustar normalização de URL no `os-client/src/lib/api.ts` para `/api` (sem `/v1`).
+- [ ] **Task 3**: Defesa em Camadas & Sanitização de Erros nos Formulários de Acesso.
+  - Mapear erros em `LoginForm.tsx`, `FirstAccessForm.tsx` e `SetupInitialForm.tsx` para mensagens humanas seguras.
+- [ ] **Task 4**: Reorganização do Roadmap & Documentação Oficial.
+  - Atualizar `docs/04-scope-roadmap.md` e sincronizar `docs/completed-work.md`.
 
 ---
 
-## 🗺️ 3. Roteiro das Próximas Fases (Visão Geral)
+## 🗺️ 3. Roteiro das Próximas Fases (Atualizado)
 
-### Fase 2: Caderno de Turno Digital & Passagem de Turno (Meta: Outubro/2026)
-- [ ] **Modelos de Dados do Turno**:
-  - Tabelas de turnos ativos, diário de ocorrências (feed), pendências e avisos.
-  - Regra de imutabilidade e auditoria nominal pós-congelamento de turno.
-- [ ] **Feed em Tempo Real do Turno**:
-  - Registro de ocorrências com horário automático e autor nominal.
-  - Sincronização entre as bancadas do LD2 (PC 1 e PC 2).
-- [ ] **Quadro Kanban de 4 Colunas**:
-  - 3 colunas de Pendências (`Alta`, `Média`, `Baixa`) com triagem rápida + 1 coluna de `Avisos`.
-  - Design ergonômico otimizado para apresentação durante a reunião de passagem no Microsoft Teams.
-
-### Fase 3: Controle de Atividades & Limpezas de Rotina
-- [ ] Gestão de tarefas periódicas (semanal, mensal, flexível).
-- [ ] Associação de responsável titular e suplente.
-- [ ] Visão dupla: *"Minhas Atividades"* (checklist pessoal em 1 clique) e *"Visão do Laboratório"*.
-- [ ] Sincronização bidirecional entre a conclusão de atividades e o feed do caderno de turno.
-- [ ] Escalação automática de prioridades (tarefas vencidas sobem automaticamente para Alta Prioridade no Kanban).
+* **Fase 3**: Pilar 1 - Caderno de Turno & Kanban de Pendências (Sockets, Feed 24/7, Drag & Drop).
+* **Fase 4**: Pilar 2 - Atividades & Limpezas de Rotina (Tarefas periódicas e sincronização bidirecional).
+* **Fase 5**: Pilar 3 - Cronograma Semanal Digital (Gantt, alocação de Jars e P&D).
+* **Fase 6**: Dashboard Integrado, Dark Mode & Refinamento Visual.
+* **Fase 7**: Homologação na Bancada & Deploy 24/7 no LD2.
