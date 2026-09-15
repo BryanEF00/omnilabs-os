@@ -34,15 +34,9 @@
 
 ---
 
-## 2. Procedimento de Inicialização (Checklist Obrigatório de Entrada)
+## 2. Inicialização de Sessão (`/start`)
 
-Ao iniciar uma nova sessão ou receber a primeira mensagem:
-1. **Git Sync**: Verificar `git status` e sincronizar se necessário (`git pull`).
-2. **Servidores Vivos (Pre-Chat Hook)**:
-   - Checar se as portas `3000` (Fastify / `core-server`) e `5173` (Vite / `os-client`) estão escutando.
-   - Se inativas, disparar `npm run dev` na raiz em segundo plano (`IsDaemon: true`) para garantir a aplicação disponível para o Bryan.
-3. **Memória Viva**: Ler [`docs/pending-work.md`](docs/pending-work.md) para posicionar o estado exato de parada e o próximo passo imediato.
-4. **Consulta sob Demanda**: Consultar apenas os arquivos do índice necessários para a tarefa atual.
+Toda nova sessão de trabalho deve ser inicializada através da skill `session-start` ao comando `/start` (ou solicitação de início do Bryan). O agente executa a auditoria Git contra o GitHub, sobe os servidores de desenvolvimento em segundo plano, lê a memória viva e entrega o briefing executivo de alinhamento antes de qualquer modificação de código.
 
 ---
 
