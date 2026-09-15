@@ -1,0 +1,12 @@
+{
+  "name": "e2e-tests",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "echo e2e-tests ready",
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.1"
+  }
+}
