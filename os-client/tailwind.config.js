@@ -7,6 +7,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Outfit', 'Inter', 'sans-serif'],
+      },
       colors: {
         brand: {
           primary: '#de3636',
