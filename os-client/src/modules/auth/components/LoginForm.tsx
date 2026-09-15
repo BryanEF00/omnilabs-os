@@ -38,6 +38,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToFirstAccess, onS
     }
   };
 
+  const isFormValid = username.trim() !== '' && password.trim() !== '';
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full" noValidate>
       {/* Cabeçalho com Título e Subtítulo */}
@@ -94,8 +96,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToFirstAccess, onS
       <Button
         type="submit"
         variant="primary"
-        className="w-full mt-2 h-10 font-semibold text-sm flex items-center justify-center gap-2"
-        disabled={isLoading}
+        className="w-full mt-2 h-10 font-semibold text-sm flex items-center justify-center gap-2 disabled:bg-[#e2e8f0] disabled:text-[#94a3b8] disabled:cursor-not-allowed disabled:pointer-events-auto disabled:opacity-100 disabled:shadow-none transition-all duration-200"
+        disabled={!isFormValid || isLoading}
       >
         <LogIn className="w-4 h-4" />
         {isLoading ? 'Autenticando...' : 'Entrar'}
@@ -106,7 +108,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToFirstAccess, onS
           <button
             type="button"
             onClick={onSwitchToFirstAccess}
-            className="text-xs font-medium text-slate-500 hover:text-brand-primary transition-colors focus:outline-none focus:underline"
+            className="text-xs font-medium text-slate-500 hover:text-brand-primary hover:underline transition-colors focus:outline-none focus:underline"
           >
             Primeiro acesso? <span className="font-semibold text-brand-primary">Ativar conta</span>
           </button>
