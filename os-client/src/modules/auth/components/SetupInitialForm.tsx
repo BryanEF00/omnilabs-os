@@ -61,7 +61,17 @@ export const SetupInitialForm: React.FC<SetupInitialFormProps> = ({ onSuccess })
       await setupFirstSupervisor(fullName, cleanEmail, password);
       onSuccess?.();
     } catch (err: any) {
-      setErrorMessage(err.message || 'Falha ao inicializar o supervisor mestre.');
+      if (err.status === 409 || err.code === 'SETUP_ALREADY_COMPLETED') {
+        setErrorMessage('A configuração inicial já foi concluída anteriormente.');
+      } else if (err.code === 'INVALID_EMAIL_DOMAIN') {
+        setErrorMessage('O e-mail deve pertencer obrigatoriamente ao domínio @br.ajinomoto.com.');
+      } else if (err.code === 'NETWORK_ERROR') {
+        setErrorMessage('Não foi possível conectar ao servidor. Verifique a rede do laboratório.');
+      } else if (err.incidentId) {
+        setErrorMessage(`Instabilidade no servidor (Código: ${err.incidentId}). Contate a liderança.`);
+      } else {
+        setErrorMessage(err.message || 'Falha ao inicializar o supervisor mestre.');
+      }
     }
   };
 

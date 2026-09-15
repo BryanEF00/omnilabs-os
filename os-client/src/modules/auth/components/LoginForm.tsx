@@ -34,7 +34,17 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToFirstAccess, onS
       await login(username.trim(), password);
       onSuccess?.();
     } catch (err: any) {
-      setErrorMessage(err.message || 'Falha ao autenticar. Verifique suas credenciais.');
+      if (err.status === 401 || err.code === 'INVALID_CREDENTIALS') {
+        setErrorMessage('Usuário ou senha incorretos.');
+      } else if (err.status === 404) {
+        setErrorMessage('Serviço de autenticação temporariamente indisponível. Tente novamente mais tarde.');
+      } else if (err.code === 'NETWORK_ERROR') {
+        setErrorMessage('Não foi possível conectar ao servidor. Verifique a rede do laboratório.');
+      } else if (err.incidentId) {
+        setErrorMessage(`Instabilidade no servidor (Código: ${err.incidentId}). Contate a liderança.`);
+      } else {
+        setErrorMessage(err.message || 'Falha ao autenticar. Tente novamente.');
+      }
     }
   };
 

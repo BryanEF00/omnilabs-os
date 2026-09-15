@@ -56,7 +56,17 @@ export const FirstAccessForm: React.FC<FirstAccessFormProps> = ({ onSwitchToLogi
       await firstAccess(cleanEmail, password);
       onSuccess?.();
     } catch (err: any) {
-      setErrorMessage(err.message || 'Falha ao ativar primeiro acesso.');
+      if (err.status === 404 || err.code === 'USER_NOT_INVITED') {
+        setErrorMessage('E-mail não autorizado para primeiro acesso. Solicite o cadastro à liderança.');
+      } else if (err.code === 'INVALID_EMAIL_DOMAIN') {
+        setErrorMessage('O e-mail deve pertencer obrigatoriamente ao domínio @br.ajinomoto.com.');
+      } else if (err.code === 'NETWORK_ERROR') {
+        setErrorMessage('Não foi possível conectar ao servidor. Verifique a rede do laboratório.');
+      } else if (err.incidentId) {
+        setErrorMessage(`Instabilidade no servidor (Código: ${err.incidentId}). Contate a liderança.`);
+      } else {
+        setErrorMessage(err.message || 'Falha ao ativar primeiro acesso.');
+      }
     }
   };
 
