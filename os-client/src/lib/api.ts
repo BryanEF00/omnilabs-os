@@ -9,25 +9,28 @@ export interface ApiResponse<T = unknown> {
   error?: {
     message: string;
     code?: string;
+    incidentId?: string;
   };
 }
 
 export class ApiError extends Error {
   public code?: string;
   public status: number;
+  public incidentId?: string;
 
-  constructor(message: string, status: number, code?: string) {
+  constructor(message: string, status: number, code?: string, incidentId?: string) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
     this.code = code;
+    this.incidentId = incidentId;
   }
 }
 
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
-  // Garante que o endpoint inicie com /api/v1
+  // Garante que o endpoint inicie com /api canônico (sem versionamento /v1 na URI)
   const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
-  const url = cleanEndpoint.startsWith('/api') ? cleanEndpoint : `/api/v1${cleanEndpoint}`;
+  const url = cleanEndpoint.startsWith('/api') ? cleanEndpoint : `/api${cleanEndpoint}`;
 
   const headers = new Headers(options.headers || {});
   if (!headers.has('Content-Type') && options.body && typeof options.body === 'string') {
@@ -51,9 +54,12 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
       const errorMessage =
         data?.error?.message ||
         data?.message ||
-        `Erro na requisição: ${response.status} ${response.statusText}`;
-      const errorCode = data?.error?.code || data?.code;
-      throw new ApiError(errorMessage, response.status, errorCode);
+        (response.status === 404
+          ? 'Recurso não encontrado.'
+          : `Erro de comunicação com o servidor (${response.status}).`);
+      const errorCode = data?.error?.code || (response.status === 404 ? 'NOT_FOUND' : 'API_ERROR');
+      const incidentId = data?.error?.incidentId;
+      throw new ApiError(errorMessage, response.status, errorCode, incidentId);
     }
 
     return data as ApiResponse<T>;
