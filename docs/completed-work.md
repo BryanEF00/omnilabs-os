@@ -77,3 +77,35 @@
     - Remoção de divisórias rígidas acima do link de ativação de conta.
     - Hover de linha inteira com sublinhado em *"Primeiro acesso? Ativar conta"*.
     - Botão primário com estado inativo cinza neutro (`#e2e8f0` / `#94a3b8`) e `cursor-not-allowed` até preenchimento completo dos campos.
+
+---
+
+## 3. Blindagem OWASP, Padronização Canônica (`/api`), Fallback Universal com Código de Incidente & E2E Playwright (Fase 2)
+
+* **Prevenção de Vazamento de Rotas e Informações (OWASP A05)**:
+  - Implementado `app.setNotFoundHandler` no `core-server/src/app.ts` retornando payload mascarado padrão `{ success: false, error: { code: 'NOT_FOUND', message: 'Recurso não encontrado.' } }` com status 404.
+  - Eliminação completa do comportamento padrão do Fastify que vazava nomes de rotas e verbos HTTP internos (`Route POST:... not found`).
+  - Cenário 10 adicionado em `core-server/tests/auth.test.ts` via ciclo TDD.
+* **Fallback Universal de Exceções com Código de Rastreio de Incidente (`incidentId`)**:
+  - Atualizado `app.setErrorHandler` no Fastify com tratamento específico para `AppError`, erros de validação `ZodError` e sanitização tipada de erros nativos Fastify (400-499).
+  - Fallback universal para falhas não mapeadas / status 500 gerando dinamicamente identificador auditável no formato `INC-<TIMESTAMP_B36>-<RANDOM_B36>` (ex: `INC-MU2WX6SJ-VRSZ`).
+  - Emissão de log completo no console do servidor (`🚨 [OmniLabs OS - Incidente INC-...]: <error>`) para auditoria de engenharia interna, mascarando 100% dos dados técnicos para o cliente (zero stack traces, zero caminhos de disco no Windows `D:\Projetos`).
+  - Cenário 11 adicionado em `core-server/tests/auth.test.ts` via ciclo TDD com validação de regex e asserções estritas de não-vazamento.
+* **Erradicação Completa de `/v1` & Normalização sob `/api` Canônico**:
+  - Remoção de qualquer prefixo residual `/v1` em `os-client/src/lib/api.ts`. O cliente normaliza qualquer endpoint relativo exclusivamente sob o padrão canônico `/api`.
+  - Atualização da classe `ApiError` e da interface `ApiResponse` para incluir a propriedade `incidentId?: string`.
+  - Remoção de menção a `v1` na interface do usuário em `AuthenticatedApp`.
+* **Restauração do Fluxo de Setup do Primeiro Supervisor (Dia Zero)**:
+  - Resolução do erro silencioso em que requisições para `/api/v1/auth/setup-status` falhavam com 404, forçando erroneamente a ida para a tela de login.
+  - Atualização do `authStore.ts` e do roteamento condicional em `os-client/src/App.tsx`: quando `setupRequired === true`, a rota `/setup` é forçada e todas as demais rotas são redirecionadas para `/setup`, garantindo o isolamento da configuração inicial antes da liberação do login normal.
+* **Mapeamento Defensivo e Anti-Enumeração nos Formulários de Acesso**:
+  - Alinhamento do tratamento de erros em `LoginForm.tsx`, `FirstAccessForm.tsx` e `SetupInitialForm.tsx`.
+  - Retorno de mensagens uniformes anti-enumeração (`Usuário ou senha incorretos.`), instruções de rede para quedas de conexão (`NETWORK_ERROR`) e orientação com exibição do código de incidente auditável (`Instabilidade no servidor (Código: INC-XXXX-YYYY). Contate a liderança.`).
+* **Suíte de Testes Ponta a Ponta (E2E) com Playwright**:
+  - Inicializado workspace dedicado `e2e-tests` com `@playwright/test` e navegador Chromium real.
+  - Implementado `e2e-tests/tests/auth-flow.spec.ts` cobrindo 3 cenários reais de navegação e renderização:
+    1. *Cenário A*: Chaveamento automático entre Dia Zero (`/setup`) e login padrão (`/login`).
+    2. *Cenário B*: Validação defensiva de formulário com asserções estritas contra vazamento de rotas ou dados do sistema operacional.
+    3. *Cenário C*: Intercepção de rotas inexistentes ou com prefixo legado `/v1`, redirecionando com segurança.
+  - 100% verde: 13 testes unitários/integração no backend e 3 testes E2E no Chromium.
+

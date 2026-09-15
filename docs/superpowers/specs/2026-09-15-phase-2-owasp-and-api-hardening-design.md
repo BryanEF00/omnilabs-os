@@ -1,26 +1,26 @@
-﻿# Fase 2: Blindagem OWASP, Padronização de API (`/api`) & Resiliência de Erros — Design Doc
+# Fase 2: Blindagem OWASP, Fallback Universal de Erros, Padronização de API (`/api`) & Restauração do Setup Dia Zero — Design Doc
 
-> **Módulo**: Governança Nominal, Infraestrutura HTTP & Tratamento de Exceções  
+> **Módulo**: Governança Nominal, Infraestrutura HTTP, Tratamento de Exceções & Setup Dia Zero  
 > **Data**: 15 de Setembro de 2026  
-> **Status**: Proposto  
+> **Status**: Aprovado / Atualizado  
 > **Decisão Canônica**: Prefixo global canônico `/api` (sem `/v1`), idêntico à arquitetura de referência do protótipo LIMS-LD2.
 
 ---
 
 ## 1. Contexto & Diagnóstico de Segurança
 
-Durante os testes de integração do formulário de acesso (`http://localhost:5173/login`), a submissão de credenciais resultou na exibição em tela de uma mensagem crua de erro:
-`Route POST:/api/v1/auth/login not found`
+Durante os testes de integração do formulário de acesso (`http://localhost:5173/login`), a submissão de credenciais e o boot inicial revelaram três não-conformidades de engenharia e segurança:
 
-Essa ocorrência revelou três não-conformidades de engenharia e segurança:
-
-1. **Desalinhamento de Contrato de Rota**:
+1. **Desalinhamento de Contrato de Rota & Ocultação do Setup Dia Zero**:
    - O cliente HTTP no frontend (`os-client/src/lib/api.ts`) presumia o prefixo versionado `/api/v1`.
    - O servidor Fastify no backend (`core-server/src/app.ts`) registrou o módulo em `/api/auth`.
+   - Ao iniciar a aplicação, a consulta a `/auth/setup-status` foi enviada como `/api/v1/auth/setup-status`, recebendo 404. O frontend tratou o erro silenciosamente, assumiu falsamente que o setup já estava concluído (`setupRequired: false`) e jogou o operador no `/login` convencional em vez de abrir a **tela única de Cadastro do Primeiro Supervisor (Dia Zero)**.
 2. **Vazamento de Informações Internas (OWASP A05 - Security Misconfiguration / Information Disclosure)**:
    - O Fastify trata rotas inexistentes (404) através do `setNotFoundHandler`, e não pelo `setErrorHandler`.
    - Como o `setNotFoundHandler` não estava customizado, o manipulador nativo do Fastify respondeu com a string técnica expondo o verbo HTTP e a rota interna (`Route POST:/api/v1/auth/login not found`).
-3. **Ausência de Defesa em Camadas na UI (`LoginForm.tsx`)**:
+3. **Ausência de Fallback Universal para Erros Não Mapeados com Código de Rastreio**:
+   - Erros inesperados ou não mapeados (4xx de plugins Fastify, 5xx ou falhas de infraestrutura) precisam de um funil de segurança universal que nunca vaze erros brutos e entregue um identificador de incidente auditável (`incidentId`) para o operador e a liderança.
+4. **Ausência de Defesa em Camadas na UI (`LoginForm.tsx`, `FirstAccessForm.tsx`, `SetupInitialForm.tsx`)**:
    - O formulário do cliente repassou a mensagem do erro diretamente para o estado `errorMessage`, renderizando dados de infraestrutura diretamente para o operador do laboratório.
 
 ---
@@ -39,51 +39,64 @@ Essa ocorrência revelou três não-conformidades de engenharia e segurança:
   - `POST /api/auth/logout`
 
 ### 2.2. Blindagem de Erros no Backend (Fastify)
-- **`app.setNotFoundHandler` (OWASP A05)**:
-  Toda e qualquer requisição direcionada a rotas não mapeadas deve responder com código HTTP 404 e payload uniforme:
-  ```json
-  {
-    "success": false,
-    "error": {
-      "code": "NOT_FOUND",
-      "message": "Recurso não encontrado."
-    }
+
+#### A. `app.setNotFoundHandler` (OWASP A05 - Rotas Inexistentes)
+Toda requisição para rotas não mapeadas deve responder com código HTTP 404 e payload uniforme:
+```json
+{
+  "success": false,
+  "error": {
+    "code": "NOT_FOUND",
+    "message": "Recurso não encontrado."
   }
-  ```
-  *Asserção de segurança estrita*: O corpo da resposta nunca deve conter strings como `Route POST:`, `Route GET:`, identificadores internos de arquivos ou caminhos do sistema operacional.
+}
+```
+*Asserção de segurança estrita*: O corpo da resposta nunca deve conter strings como `Route POST:`, `Route GET:`, identificadores internos de arquivos ou caminhos do sistema operacional.
 
-- **`app.setErrorHandler`**:
-  - `AppError` operacional: Retorna o código e a mensagem de negócio definida pela aplicação.
-  - `ZodError` de validação: Retorna mensagem clara do primeiro campo inválido.
-  - Erro Inesperado (500): Mascaramento total com mensagem neutra institucional:
-    `"Ocorreu uma instabilidade interna no servidor. Se o problema persistir, notifique a liderança do LD2."`
+#### B. `app.setErrorHandler` (Fallback Universal & Rastreio de Incidentes)
+1. **`AppError`**: Preserva `statusCode`, `code` e `message` da regra de negócio.
+2. **`ZodError`**: Preserva status 400 e primeira mensagem amigável de validação de campo.
+3. **Erros HTTP Fastify (com `statusCode`)**: Responde com o status code correspondente e mensagem sanitizada (sem jargões internos).
+4. **Erros Inesperados / Não Mapeados (500)**:
+   - Gera um `incidentId` único (ex: `INC-M7K2-A4F9`).
+   - Registra no console interno o erro com stack trace e seu `incidentId` para auditoria dos desenvolvedores.
+   - Devolve ao cliente payload blindado:
+     ```json
+     {
+       "success": false,
+       "error": {
+         "code": "UNEXPECTED_ERROR",
+         "incidentId": "INC-M7K2-A4F9",
+         "message": "Ocorreu uma instabilidade inesperada no servidor. Se o problema persistir, informe a liderança com o código de rastreio INC-M7K2-A4F9."
+       }
+     }
+     ```
 
-### 2.3. Defesa em Camadas no Frontend (`os-client`)
-- **Cliente HTTP (`os-client/src/lib/api.ts`)**:
-  - Normalização da URL base: endpoints sem prefixo `/api` recebem automaticamente `/api` (ex: `/auth/login` -> `/api/auth/login`).
-  - Tratamento de status de erro de transporte: se o backend devolver erro sem corpo JSON ou com erro genérico, criar um `ApiError` sanitizado.
-- **Formulários de Autenticação (`LoginForm.tsx`, `FirstAccessForm.tsx`, `SetupInitialForm.tsx`)**:
-  - Mapear os erros para mensagens humanas elegantes:
-    - `INVALID_CREDENTIALS` (401): *"Usuário ou senha incorretos."* (Anti-enumeração de usuários conforme OWASP).
-    - `NOT_FOUND` (404) ou `INTERNAL_SERVER_ERROR` (500): *"Serviço de autenticação temporariamente indisponível. Tente novamente mais tarde."*.
-    - `NETWORK_ERROR`: *"Não foi possível conectar ao servidor. Verifique a rede do laboratório."*.
+### 2.3. Restauração do Setup Dia Zero no Frontend (`os-client`)
+- `useAuthStore.checkSession()`:
+  - Consulta `GET /api/auth/setup-status`.
+  - Se `setupRequired === true`, define `setupRequired: true` e limpa sessão ativa.
+  - Em caso de falha de comunicação, define erro explícito.
+- `App.tsx`:
+  - No estado não-autenticado, se `setupRequired === true`, força a rota ou renderização da tela de **Cadastro do Primeiro Supervisor**.
+- `AuthPage.tsx`:
+  - Renderiza o `SetupInitialForm` com layout protegido, impedindo que o operador caia no login convencional sem supervisores existentes.
+
+### 2.4. Defesa em Camadas & Mapeamento de Erros na UI
+- O cliente HTTP (`api.ts`) normaliza as rotas para `/api` e expõe `incidentId` via `ApiError`.
+- Os formulários (`LoginForm`, `FirstAccessForm`, `SetupInitialForm`) traduzem erros para mensagens acolhedoras em português, exibindo o código de rastreio de incidentes caso ele exista.
+
+### 2.5. Refinamento Contínuo da UI
+- A conclusão desta fase técnica mantém formalmente aberto e ativo o processo de refinamento visual e ergonômico da UI (OmniDS), com aprovação prévia via preview visual antes de qualquer modificação de arquivo.
 
 ---
 
-## 3. Estratégia de Testes Automatizados (TDD & Regressão)
+## 3. Estratégia de Testes Automatizados (TDD)
 
 ### 3.1. Backend (`core-server/tests/auth.test.ts`)
-- **Cenário 10: Mascaramento Seguro de 404 (OWASP A05)**:
-  - Disparar requisições para rotas inexistentes (`POST /api/v1/auth/login`, `GET /api/rotas-falsas`).
-  - Validar status 404.
-  - Validar código de erro `'NOT_FOUND'`.
-  - Asserção regex garantindo ausência de `Route POST`, `Route GET` e caminhos de disco.
+- **Cenário 10**: Mascaramento Seguro de 404 (OWASP A05 - zero route leak).
+- **Cenário 11**: Fallback Universal de Erro 500 com Código de Rastreio (`incidentId`) e zero stack leak.
 
 ### 3.2. Frontend (`os-client`)
-- Executar testes de formatação e mapeamento de erros nos componentes de autenticação.
-
----
-
-## 4. Reorganização do Roadmap (Fase 2 Oficial)
-- A refatoração atual é promovida a **Fase 2 Oficial: Blindagem OWASP, Padronização de API (`/api`) & Resiliência de Erros**.
-- O Caderno de Turno Digital & Kanban é postergado para a **Fase 3**, preservando o foco absoluto na estabilidade e segurança das fundações.
+- Suíte de compilação limpa (`tsc` e `vite build`).
+- Validação manual ponta a ponta do boot em Dia Zero.
