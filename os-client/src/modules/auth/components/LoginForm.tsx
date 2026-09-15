@@ -102,7 +102,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToFirstAccess, onS
       </Button>
 
       {onSwitchToFirstAccess && (
-        <div className="pt-2 text-center border-t border-slate-100">
+        <div className="pt-1 text-center">
           <button
             type="button"
             onClick={onSwitchToFirstAccess}
