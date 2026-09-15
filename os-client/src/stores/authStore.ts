@@ -37,7 +37,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   checkSession: async () => {
     set({ isLoading: true });
     try {
-      // 1. Consulta se o sistema requer inicialização Dia Zero
+      // 1. Consulta se o sistema requer inicialização Dia Zero (primeiro supervisor)
       const setupRes = await api.get<{ setupRequired: boolean }>('/auth/setup-status');
       if (setupRes.data.setupRequired) {
         set({

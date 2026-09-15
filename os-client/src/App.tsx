@@ -69,7 +69,7 @@ function AuthenticatedApp() {
             </div>
             <div className="p-3 bg-slate-50 rounded-lg">
               <span className="text-slate-400 block mb-1">Conexão Backend</span>
-              <span className="font-semibold text-emerald-700">API v1 Operacional (Fastify)</span>
+              <span className="font-semibold text-emerald-700">API Operacional (Fastify)</span>
             </div>
           </div>
         </div>
@@ -82,7 +82,7 @@ function AuthenticatedApp() {
  * Componente Raiz da Aplicação com Roteamento e Checagem de Sessão.
  */
 export function App() {
-  const { isInitialized, isAuthenticated, checkSession } = useAuthStore();
+  const { isInitialized, isAuthenticated, setupRequired, checkSession } = useAuthStore();
 
   useEffect(() => {
     checkSession();
@@ -108,11 +108,15 @@ export function App() {
             <Route path="/" element={<AuthenticatedApp />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </>
+        ) : setupRequired ? (
+          <>
+            <Route path="/setup" element={<AuthPage initialMode="setup" />} />
+            <Route path="*" element={<Navigate to="/setup" replace />} />
+          </>
         ) : (
           <>
             <Route path="/login" element={<AuthPage initialMode="login" />} />
             <Route path="/primeiro-acesso" element={<AuthPage initialMode="first-access" />} />
-            <Route path="/setup" element={<AuthPage initialMode="setup" />} />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </>
         )}
