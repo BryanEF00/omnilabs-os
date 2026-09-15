@@ -40,23 +40,22 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToFirstAccess, onS
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full" noValidate>
-      {/* Título sem subtítulo conforme aprovado */}
+      {/* Cabeçalho com Título e Subtítulo */}
       <div className="text-left">
-        <h2 className="text-xl font-bold tracking-tight text-neutral-dark">Acesso ao sistema</h2>
+        <h2 className="text-xl font-bold tracking-tight text-neutral-dark">Acesso ao Sistema</h2>
+        <p className="text-xs text-slate-500 mt-1">Insira suas credenciais para continuar.</p>
       </div>
 
-      {/* Slot reservado para mensagens com Zero Layout Shift (CLS = 0) */}
-      <div className="min-h-[44px] flex items-center" aria-live="polite">
-        {errorMessage ? (
-          <div
-            role="alert"
-            className="w-full flex items-start gap-2.5 px-3 py-2.5 text-xs bg-red-50 border border-red-200 text-red-700 rounded-md animate-in fade-in duration-150"
-          >
-            <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
-            <span className="leading-tight">{errorMessage}</span>
-          </div>
-        ) : null}
-      </div>
+      {/* Exibição condicional de erro sem espaço reservado prévio */}
+      {errorMessage && (
+        <div
+          role="alert"
+          className="w-full flex items-start gap-2.5 px-3 py-2 text-xs bg-red-50 border border-red-200 text-red-700 rounded-md animate-in fade-in duration-150"
+        >
+          <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+          <span className="leading-tight">{errorMessage}</span>
+        </div>
+      )}
 
       <div className="space-y-1.5 text-left">
         <Label htmlFor="login-username">Usuário</Label>
