@@ -293,8 +293,8 @@ describe('Módulo de Autenticação e Governança Nominal (LD2)', () => {
     expect(errorRes.statusCode).toBe(500);
     const errorBody = JSON.parse(errorRes.payload);
     expect(errorBody.success).toBe(false);
-    expect(errorBody.error.code).toBe('INTERNAL_SERVER_ERROR');
-    expect(errorBody.error.message).toContain('instabilidade interna no servidor');
+    expect(errorBody.error.code).toBe('UNEXPECTED_ERROR');
+    expect(errorBody.error.message).toContain('instabilidade inesperada no servidor');
     
     // Asserção estrita de segurança: nenhuma menção a caminhos do Windows ou código-fonte
     const rawPayload = errorRes.payload;
@@ -322,5 +322,29 @@ describe('Módulo de Autenticação e Governança Nominal (LD2)', () => {
     expect(notFoundRes.payload).not.toMatch(/Route POST/i);
     expect(notFoundRes.payload).not.toMatch(/Route GET/i);
     expect(notFoundRes.payload).not.toMatch(/not found/i);
+  });
+
+  // --------------------------------------------------------------------------
+  // CENÁRIO 11: FALLBACK UNIVERSAL DE ERRO E CÓDIGO DE RASTREIO DE INCIDENTE
+  // --------------------------------------------------------------------------
+  it('Cenário 11: Erro inesperado deve gerar código de rastreio de incidente sem vazar stack trace ou caminhos de disco', async () => {
+    const crashRes = await app.inject({
+      method: 'GET',
+      url: '/api/test-simulated-crash',
+    });
+
+    expect(crashRes.statusCode).toBe(500);
+    const body = JSON.parse(crashRes.payload);
+    expect(body.success).toBe(false);
+    expect(body.error.code).toBe('UNEXPECTED_ERROR');
+    expect(body.error.incidentId).toBeDefined();
+    expect(body.error.incidentId).toMatch(/^INC-[A-Z0-9]+-[A-Z0-9]+$/);
+    expect(body.error.message).toContain(body.error.incidentId);
+
+    // Asserção rigorosa: zero vazamento de arquivos do Windows ou nomes de pastas
+    expect(crashRes.payload).not.toMatch(/D:\\Projetos/i);
+    expect(crashRes.payload).not.toMatch(/node_modules/i);
+    expect(crashRes.payload).not.toMatch(/secret\.ts/i);
+    expect(crashRes.payload).not.toMatch(/at /i);
   });
 });

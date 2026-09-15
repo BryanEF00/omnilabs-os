@@ -31,9 +31,9 @@ export async function buildApp() {
     credentials: true, // Permite o tráfego seguro de Cookies HttpOnly entre portas locais
   });
 
-  // 2. TRATADOR GLOBAL DE ERROS (OWASP A05 - PREVENÇÃO DE VAZAMENTO DE DADOS)
+  // 2. TRATADOR GLOBAL DE ERROS (OWASP A05 & FALLBACK UNIVERSAL DE INCIDENTES)
   app.setErrorHandler((error, _request, reply) => {
-    // Caso A: Erro Operacional / Regra de Negócio conhecida
+    // Caso A: Erro Operacional / Regra de Negócio conhecida (AppError)
     if (error instanceof AppError) {
       return reply.status(error.statusCode).send({
         success: false,
@@ -58,13 +58,33 @@ export async function buildApp() {
       });
     }
 
-    // Caso C: Erro Inesperado de Sistema / Falha Crítica (Status 500)
-    // Mascara 100% dos dados técnicos: zero stack traces, zero caminhos de disco no Windows
+    // Caso C: Erro HTTP nativo do Fastify com statusCode reconhecido (ex: 400, 429)
+    const httpError = error as { statusCode?: number; code?: string; message?: string };
+    if (typeof httpError.statusCode === 'number' && httpError.statusCode >= 400 && httpError.statusCode < 500) {
+      return reply.status(httpError.statusCode).send({
+        success: false,
+        error: {
+          code: httpError.code || 'HTTP_ERROR',
+          message: httpError.message || 'Requisição inválida.',
+        },
+      });
+    }
+
+    // Caso D: Fallback Universal para Falhas Não Mapeadas / Erro Inesperado (Status 500)
+    const timestampPart = Date.now().toString(36).toUpperCase();
+    const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase();
+    const incidentId = `INC-${timestampPart}-${randomPart}`;
+
+    // Registra log completo no servidor para auditoria interna
+    console.error(`🚨 [OmniLabs OS - Incidente ${incidentId}]:`, error);
+
+    // Mascara 100% dos dados técnicos para o cliente
     return reply.status(500).send({
       success: false,
       error: {
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Ocorreu uma instabilidade interna no servidor. Se o problema persistir, notifique a liderança do LD2.',
+        code: 'UNEXPECTED_ERROR',
+        incidentId,
+        message: `Ocorreu uma instabilidade inesperada no servidor. Se o problema persistir, informe a liderança com o código de rastreio ${incidentId}.`,
       },
     });
   });
