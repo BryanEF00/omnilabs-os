@@ -302,4 +302,25 @@ describe('Módulo de Autenticação e Governança Nominal (LD2)', () => {
     expect(rawPayload).not.toMatch(/node_modules/);
     expect(rawPayload).not.toMatch(/stack/i);
   });
+
+  // --------------------------------------------------------------------------
+  // CENÁRIO 10: MASCARAMENTO SEGURO DE ROTAS 404 (OWASP A05 - ZERO ROUTE LEAK)
+  // --------------------------------------------------------------------------
+  it('Cenário 10: Rotas inexistentes devem retornar 404 mascarado sem expor nomes de rota ou métodos internos', async () => {
+    const notFoundRes = await app.inject({
+      method: 'POST',
+      url: '/api/v1/auth/login', // Tentativa de rota inexistente
+    });
+
+    expect(notFoundRes.statusCode).toBe(404);
+    const body = JSON.parse(notFoundRes.payload);
+    expect(body.success).toBe(false);
+    expect(body.error.code).toBe('NOT_FOUND');
+    expect(body.error.message).toBe('Recurso não encontrado.');
+
+    // Asserção rigorosa de segurança: zero vazamento de métodos HTTP internos ou "Route POST:"
+    expect(notFoundRes.payload).not.toMatch(/Route POST/i);
+    expect(notFoundRes.payload).not.toMatch(/Route GET/i);
+    expect(notFoundRes.payload).not.toMatch(/not found/i);
+  });
 });

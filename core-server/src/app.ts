@@ -69,12 +69,23 @@ export async function buildApp() {
     });
   });
 
-  // 3. Rota de teste para verificação do mascaramento seguro de erros
+  // 3. TRATADOR GLOBAL DE ROTAS NÃO ENCONTRADAS (OWASP A05 - PREVENÇÃO DE VAZAMENTO DE ROTAS)
+  app.setNotFoundHandler((_request, reply) => {
+    return reply.status(404).send({
+      success: false,
+      error: {
+        code: 'NOT_FOUND',
+        message: 'Recurso não encontrado.',
+      },
+    });
+  });
+
+  // 4. Rota de teste para verificação do mascaramento seguro de erros
   app.get('/api/test-simulated-crash', async () => {
     throw new Error('Falha catastrófica interna simulada em D:\\Projetos\\omnilabs-os\\node_modules\\secret.ts');
   });
 
-  // 4. Registro dos Módulos da Aplicação
+  // 5. Registro dos Módulos da Aplicação
   await app.register(authRoutes, { prefix: '/api/auth' });
 
   return app;
