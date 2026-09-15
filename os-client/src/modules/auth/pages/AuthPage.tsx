@@ -46,7 +46,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ initialMode = 'login' }) => 
 
   return (
     <div className="min-h-screen w-full bg-slate-100 flex items-center justify-center p-3 sm:p-6 md:p-8 select-none">
-      <div className="w-full max-w-[800px] h-[520px] bg-white rounded-2xl shadow-xl shadow-slate-300/40 border border-slate-200/80 flex flex-col md:flex-row overflow-hidden transition-all duration-300">
+      <div className="w-full max-w-[800px] h-[520px] bg-white rounded-card-lg shadow-xl shadow-slate-300/40 border border-slate-200/80 flex flex-col md:flex-row overflow-hidden transition-all duration-300">
         {/* Coluna Esquerda: Painel Hero Ajinomoto */}
         <div className="hidden md:flex md:w-[280px] md:min-w-[280px] h-full shrink-0">
           <LoginHeroPanel className="w-full h-full" />
